@@ -1,0 +1,14 @@
+moc
+obj
+rcc
+release
+.DS_Store
+*.pro.user
+*.pro.user*
+*.stash
+debug
+*.o
+lib/mavlink_generated
+.vscode
+obj
+
