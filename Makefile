@@ -1,10 +1,14 @@
 
 INC_DIR = ./inc
 MAVLINK_DIR = ./lib/mavlink_generated/include/mavlink/v2.0 
-SYSTEM_INCLUDE = /usr/local/include
 SRC_DIR = ./src
 
-LDFLAGS = -L/usr/local/lib -llifepo4wered -lboost_system -lboost_program_options
+ifeq ($(PREFIX),)
+	PREFIX := /usr/local
+endif
+
+SYSTEM_INCLUDE = $(PREFIX)/include
+LDFLAGS = -L$(PREFIX)/lib -llifepo4wered -lboost_system -lboost_program_options
 
 
 openhd_microservice: ina2xx.o microservice.o camera.o power.o main.o 
