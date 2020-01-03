@@ -32,3 +32,12 @@ ina2xx.o: $(SRC_DIR)/ina2xx.c
 
 clean:
 	rm -f *.o openhd_microservice
+
+.PHONY: install
+install: openhd_microservice
+	install -d $(PREFIX)/bin/
+	install -m 755 openhd_microservice $(PREFIX)/bin/
+
+.PHONY: uninstall
+uninstall:
+	rm -f $(PREFIX)/bin/openhd_microservice
