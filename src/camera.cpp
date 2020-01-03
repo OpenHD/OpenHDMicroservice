@@ -27,37 +27,8 @@ void CameraMicroservice::setup() {}
 void CameraMicroservice::process_mavlink_message(mavlink_message_t msg) {
     switch (msg.msgid) {
         case MAVLINK_MSG_ID_PARAM_REQUEST_LIST: {
-
             mavlink_param_request_list_t request;
             mavlink_msg_param_request_list_decode(&msg, &request);
-
-            /*
-            auto keys = settings.allKeys();
-            auto param_count = keys.count();
-
-            auto len = 0;
-            auto sent = 0;
-            auto written = 0;
-            uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-
-            QStringList::const_iterator i = keys.constBegin();
-            while (i != keys.constEnd()) {
-                auto key = *i;
-                auto value = settings.value(key);
-
-                qDebug() << "Returning key: " << key <<", value: " << value;
-
-                mavlink_message_t outgoing_msg;
-                mavlink_msg_param_value_pack(this->m_sys_id, SERVICE_COMPID, &outgoing_msg, key.toUtf8(), value.toString(), MAV_PARAM_EXT_TYPE_CUSTOM, param_count, sent);
-                len = mavlink_msg_to_send_buffer(buffer, &outgoing_msg);
-                written = socket->write((char*)buffer, len);
-                socket->flush();
-
-                sent += 1;
-                ++i;
-            }
-            */
-
             break;
         }
         case MAVLINK_MSG_ID_COMMAND_LONG: {
