@@ -12,6 +12,7 @@ using namespace boost::asio;
 #include "microservice.h"
 #include "power.h"
 #include "camera.h"
+#include "gpio.h"
 
 int main(int argc, char *argv[]) {
 
@@ -26,6 +27,7 @@ int main(int argc, char *argv[]) {
         desc.add_options()("help", "produce help message")
                           ("camera", "enable camera microservice")
                           ("power", "enable power sensor microservice")
+                          ("gpio", "enable gpio control microservice")
                           ("sysid", boost::program_options::value<int>()->required(), "local mavlink system id");
 
         boost::program_options::variables_map vm;
@@ -43,6 +45,9 @@ int main(int argc, char *argv[]) {
         } else if (vm.count("power")) {
             std::cout << "Power sensor microservice enabled ";
             service = new PowerMicroservice(io_service);
+        } else if (vm.count("gpio")) {
+            std::cout << "GPIO control microservice enabled ";
+            service = new GPIOMicroservice(io_service);
         } else {
             std::cout << "No service enabled" << std::endl;
             exit(1);
