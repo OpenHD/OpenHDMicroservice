@@ -3,9 +3,10 @@ Description=OpenHDMicroservice -- %I
 After=network.target auditd.service
 
 [Service]
+EnvironmentFile=/etc/openhd/openhd_microservice.conf
 Restart=always
 Type=simple
-ExecStart=/usr/local/bin/openhd_microservice --%I --sysid 253
+ExecStart=/usr/local/bin/openhd_microservice --%I --sysid ${SYSID}
 
 [Install]
 WantedBy=multi-user.target
