@@ -41,6 +41,8 @@ install: openhd_microservice
 	install -d $(PREFIX)/bin/
 	install -m 755 openhd_microservice $(PREFIX)/bin/
 	install -m 644 openhd_microservice@.service /etc/systemd/system/
+	install -d /etc/openhd
+	install -m 644 openhd_microservice.conf /etc/openhd/
 
 .PHONY: enable
 enable: install
