@@ -42,6 +42,16 @@ install: openhd_microservice
 	install -m 755 openhd_microservice $(PREFIX)/bin/
 	install -m 644 openhd_microservice@.service /etc/systemd/system/
 
+.PHONY: enable
+enable: install
+	systemctl enable openhd_microservice@power
+	systemctl start openhd_microservice@power
+
+	systemctl enable openhd_microservice@gpio
+	systemctl start openhd_microservice@gpio
+
+	systemctl enable openhd_microservice@camera
+	systemctl start openhd_microservice@camera
 
 .PHONY: uninstall
 uninstall:
