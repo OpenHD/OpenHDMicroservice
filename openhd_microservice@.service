@@ -1,0 +1,12 @@
+[Unit]
+Description=OpenHDMicroservice -- %I
+After=network.target auditd.service
+
+[Service]
+Restart=always
+Type=simple
+ExecStart=/usr/local/bin/openhd_microservice --%I --sysid 253
+
+[Install]
+WantedBy=multi-user.target
+Alias=openhdmicroservice@.service
