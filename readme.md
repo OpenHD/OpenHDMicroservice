@@ -3,16 +3,19 @@
 This code is intended to act as a Mavlink "microservice", using very little system resources
 and depending only on external libraries it actually needs to function.
 
+**Note**: currently the power microservice is the only one ready to be used, and only for 
+lifepowered/pi power sensors (there's no configuration for in219 yet).
+
 ----
 
 ## Dependencies
 
-For testing on Open.HD images:
+#### For testing on Open.HD images:
 
 Only install the Raspbian packages listed below, the lifepoweredpi library and mavlink-routerd are already included in 
 recent Open.HD releases.
 
-For Raspbian:
+#### For Raspbian:
 
     apt install build-essential git python libboost-dev libboost-program-options-dev libboost-system-dev libasio-dev
 
@@ -52,7 +55,7 @@ in the repo so you don't need to rebuild them.
     git clone https://github.com/OpenHD/OpenHDMicroservice.git
     cd OpenHDMicroservice
     git submodule update --init
-    make install
+    sudo make install
 
 -----
 
@@ -60,7 +63,21 @@ in the repo so you don't need to rebuild them.
 
 Make sure mavlink-routerd is running first.
 
-There isn't a systemd service file for starting the various microservices yet, but you can test directly:
+There's a systemd service file for starting the various microservices, which will use the system ID specified
+in `/etc/openhd/microservice.conf`:
+
+    systemctl start openhd_microservice@power
+
+Or:
+
+    systemctl start openhd_microservice@gpio
+
+Or:
+
+    systemctl start openhd_microservice@camera
+
+
+You can also run them directly for testing:
 
     openhd_microservice --power --sysid 253
 
@@ -70,7 +87,7 @@ That will start the power sensor microservice using system ID 253 (should be dif
 
 ## Available microservices
 
-Currently there are two, camera and power sensor microservices.
+Currently there are three: power sensor, camera, and GPIO microservices.
 
 Only the power sensor microservice is fully functional
 
@@ -86,3 +103,8 @@ be enabled soon.
 Currently just used as a demo of custom Mavlink commands (changing brightness and other settings live), but 
 will be expanded to support retrieving h264 bytestream from the camera and sending the data to stdout for 
 tx_rawsock to use.
+
+### GPIO microservice
+
+Code for this isn't finished yet, but will allow reading high/low state and toggling GPIOs on the ground or 
+air pi, for whatever purpose you can think of.
