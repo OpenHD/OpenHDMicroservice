@@ -16,10 +16,10 @@ public:
 
     void connect();
     void start_receive();    
-    void send_heartbeat();
+    void send_heartbeat(const boost::system::error_code& error);
     void set_sysid(int8_t sysid);
 
-    virtual void setup() = 0;
+    void setup();
     void handle_receive(const boost::system::error_code& error, std::size_t recvlen);
     virtual void process_mavlink_message(mavlink_message_t msg) = 0;
 
@@ -28,12 +28,14 @@ protected:
 
     char m_recv_buf[1024];
 
-    boost::posix_time::seconds m_interval;
-    boost::asio::deadline_timer m_timer;
-
     boost::asio::ip::tcp::socket m_socket;
 
     mavlink_status_t m_mavlink_status;
+
+private:
+    boost::posix_time::seconds m_heartbeat_interval;
+    boost::asio::deadline_timer m_heartbeat_timer;
+
 };
 
 #endif

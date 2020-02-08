@@ -19,7 +19,7 @@ using namespace boost::asio;
 
 
 
-Microservice::Microservice(boost::asio::io_service &io_service): m_socket(io_service), m_interval(5), m_timer(io_service, m_interval) {}
+Microservice::Microservice(boost::asio::io_service &io_service): m_socket(io_service), m_heartbeat_interval(5), m_heartbeat_timer(io_service, m_heartbeat_interval) {}
 
 void Microservice::set_sysid(int8_t sysid) {
     this->m_sysid = sysid;
@@ -32,6 +32,12 @@ void Microservice::connect() {
     this->m_socket.connect(ip::tcp::endpoint(boost::asio::ip::address::from_string(ROUTER_ADDRESS), ROUTER_PORT));
 }
 
+void Microservice::setup() {
+    std::cout << "Microservice::setup()" << std::endl;
+    this->m_heartbeat_timer.async_wait(boost::bind(&Microservice::send_heartbeat, 
+                                       this, 
+                                       boost::asio::placeholders::error));
+}
 
 void Microservice::start_receive() {
     this->m_socket.async_receive(boost::asio::buffer(this->m_recv_buf, sizeof(this->m_recv_buf)), 
@@ -41,7 +47,7 @@ void Microservice::start_receive() {
                                              boost::asio::placeholders::bytes_transferred));
 }
 
-void Microservice::send_heartbeat() {
+void Microservice::send_heartbeat(const boost::system::error_code& error) {
     uint8_t raw[MAVLINK_MAX_PACKET_LEN];
     int len = 0;
 
@@ -52,8 +58,10 @@ void Microservice::send_heartbeat() {
     boost::system::error_code err;
     this->m_socket.send(buffer(raw, len), 0, err);
 
-    //timer.expires_at(timer.expires_at() + interval);
-    //timer.async_wait(send_heartbeat);
+    m_heartbeat_timer.expires_at(m_heartbeat_timer.expires_at() + m_heartbeat_interval);
+    this->m_heartbeat_timer.async_wait(boost::bind(&Microservice::send_heartbeat, 
+                                                   this, 
+                                                   boost::asio::placeholders::error));
 }
 
 

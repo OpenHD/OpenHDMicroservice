@@ -28,13 +28,16 @@ extern "C" {
 #define SERVICE_COMPID MAV_COMP_ID_USER1
 
 
-PowerMicroservice::PowerMicroservice(boost::asio::io_service &io_service): Microservice(io_service) {}
+PowerMicroservice::PowerMicroservice(boost::asio::io_service &io_service): Microservice(io_service), m_status_interval(5), m_status_timer(io_service, m_status_interval) {
+    m_status_interval = boost::posix_time::seconds(5);
+}
 
 
 void PowerMicroservice::setup() {
-    this->m_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
-                                         this, 
-                                         boost::asio::placeholders::error));
+    Microservice::setup();
+    this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
+                                                this, 
+                                                boost::asio::placeholders::error));
 }
 
 
@@ -56,8 +59,8 @@ void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code
     boost::system::error_code err;
     this->m_socket.send(boost::asio::buffer(raw, len), 0, err);
 
-    this->m_timer.expires_at(this->m_timer.expires_at() + this->m_interval);
-    this->m_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
+    this->m_status_timer.expires_at(this->m_status_timer.expires_at() + this->m_status_interval);
+    this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
                                          this, 
                                          boost::asio::placeholders::error));
 }

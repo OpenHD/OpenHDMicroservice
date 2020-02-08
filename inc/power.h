@@ -19,6 +19,10 @@ public:
     void send_openhd_ground_power(const boost::system::error_code& error);
 
     virtual void process_mavlink_message(mavlink_message_t msg);
+    
+ private:
+    boost::posix_time::seconds m_status_interval;
+    boost::asio::deadline_timer m_status_timer;
 };
 
 #endif
