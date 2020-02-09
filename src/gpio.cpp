@@ -15,7 +15,7 @@
 #include "constants.h"
 
 
-#define SERVICE_COMPID MAV_COMP_ID_USER1
+#define SERVICE_COMPID MAV_COMP_ID_USER2
 
 
 GPIOMicroservice::GPIOMicroservice(boost::asio::io_service &io_service): Microservice(io_service) {}
