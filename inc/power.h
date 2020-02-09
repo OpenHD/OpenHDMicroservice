@@ -14,7 +14,7 @@ class PowerMicroservice: public Microservice {
 public:
     PowerMicroservice(boost::asio::io_service &io_service);
 
-    virtual void setup();
+    void setup();
 
     void send_openhd_ground_power(const boost::system::error_code& error);
 

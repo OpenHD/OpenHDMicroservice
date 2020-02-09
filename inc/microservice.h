@@ -20,7 +20,7 @@ public:
     void set_sysid(int8_t sysid);
     void set_compid(int8_t compid);
 
-    void setup();
+    virtual void setup();
     void handle_receive(const boost::system::error_code& error, std::size_t recvlen);
     virtual void process_mavlink_message(mavlink_message_t msg) = 0;
 

@@ -14,7 +14,7 @@ class GPIOMicroservice: public Microservice {
 public:
     GPIOMicroservice(boost::asio::io_service &io_service);
 
-    virtual void setup();
+    void setup();
 
     virtual void process_mavlink_message(mavlink_message_t msg);
 };
