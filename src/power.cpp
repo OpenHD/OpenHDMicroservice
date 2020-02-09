@@ -35,6 +35,7 @@ PowerMicroservice::PowerMicroservice(boost::asio::io_service &io_service): Micro
 
 
 void PowerMicroservice::setup() {
+    std::cout << "PowerMicroservice::setup()" << std::endl;
     Microservice::setup();
     this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
                                                 this, 
@@ -43,6 +44,8 @@ void PowerMicroservice::setup() {
 
 
 void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code& error) {
+    std::cout << "PowerMicroservice::send_openhd_ground_power" << std::endl;
+
     uint8_t raw[MAVLINK_MAX_PACKET_LEN];
     int len = 0;
 

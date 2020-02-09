@@ -52,6 +52,7 @@ void Microservice::start_receive() {
 }
 
 void Microservice::send_heartbeat(const boost::system::error_code& error) {
+    std::cout << "Microservice::send_heartbeat" << std::endl;
     uint8_t raw[MAVLINK_MAX_PACKET_LEN];
     int len = 0;
 
