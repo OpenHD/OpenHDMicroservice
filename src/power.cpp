@@ -29,6 +29,7 @@ extern "C" {
 
 
 PowerMicroservice::PowerMicroservice(boost::asio::io_service &io_service): Microservice(io_service), m_status_interval(5), m_status_timer(io_service, m_status_interval) {
+    set_compid(SERVICE_COMPID);
     m_status_interval = boost::posix_time::seconds(5);
 }
 
@@ -53,7 +54,7 @@ void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code
     auto vbat = (float)read_lifepo4wered(VBAT) / 1000.0;
 
     mavlink_message_t outgoing_msg;
-    mavlink_msg_openhd_ground_power_pack(this->m_sysid, SERVICE_COMPID, &outgoing_msg, vin, vout, vbat, iout, bat_type);
+    mavlink_msg_openhd_ground_power_pack(this->m_sysid, this->m_compid, &outgoing_msg, vin, vout, vbat, iout, bat_type);
     len = mavlink_msg_to_send_buffer(raw, &outgoing_msg);
 
     boost::system::error_code err;

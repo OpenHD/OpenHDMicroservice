@@ -25,6 +25,10 @@ void Microservice::set_sysid(int8_t sysid) {
     this->m_sysid = sysid;
 }
 
+void Microservice::set_compid(int8_t compid) {
+    this->m_compid = compid;
+}
+
 
 void Microservice::connect() {
 
@@ -52,7 +56,7 @@ void Microservice::send_heartbeat(const boost::system::error_code& error) {
     int len = 0;
 
     mavlink_message_t outgoing_msg;
-    mavlink_msg_heartbeat_pack(this->m_sysid, MAV_COMP_ID_USER1, &outgoing_msg, MAV_TYPE_CAMERA, MAV_AUTOPILOT_INVALID, 0, 0, 0);
+    mavlink_msg_heartbeat_pack(this->m_sysid, this->m_compid, &outgoing_msg, MAV_TYPE_CAMERA, MAV_AUTOPILOT_INVALID, 0, 0, 0);
     len = mavlink_msg_to_send_buffer(raw, &outgoing_msg);
 
     boost::system::error_code err;

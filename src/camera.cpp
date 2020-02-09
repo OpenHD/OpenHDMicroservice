@@ -18,7 +18,9 @@
 #define SERVICE_COMPID MAV_COMP_ID_CAMERA
 
 
-CameraMicroservice::CameraMicroservice(boost::asio::io_service &io_service): Microservice(io_service) {}
+CameraMicroservice::CameraMicroservice(boost::asio::io_service &io_service): Microservice(io_service) {
+    set_compid(SERVICE_COMPID);
+}
 
 
 void CameraMicroservice::setup() {}
@@ -41,7 +43,7 @@ void CameraMicroservice::process_mavlink_message(mavlink_message_t msg) {
             }
 
             // only process commands sent to this component or boadcast to all components on this system
-            if ((command.target_component != SERVICE_COMPID && command.target_component != MAV_COMP_ID_ALL)) {
+            if ((command.target_component != this->m_compid && command.target_component != MAV_COMP_ID_ALL)) {
                 return;
             }
 
@@ -58,7 +60,7 @@ void CameraMicroservice::process_mavlink_message(mavlink_message_t msg) {
                     // acknowledge the command first...
                     mavlink_message_t ack;
                     mavlink_msg_command_ack_pack(this->m_sysid, // mark the message as being from the local system ID
-                                                 SERVICE_COMPID, // and from the camera component
+                                                 this->m_compid, // and from this component
                                                  &ack,
                                                  OPENHD_CMD_GET_CAMERA_SETTINGS, // the command we're ack'ing
                                                  MAV_CMD_ACK_OK,
@@ -74,7 +76,7 @@ void CameraMicroservice::process_mavlink_message(mavlink_message_t msg) {
                     // ... then reply
                     mavlink_message_t outgoing_msg;
                     mavlink_msg_openhd_camera_settings_pack(this->m_sysid, // mark the message as being from the local system ID
-                                                            SERVICE_COMPID,  // and from the camera component
+                                                            this->m_compid,  // and from this component
                                                             &outgoing_msg,
                                                             brightness,
                                                             contrast,
@@ -103,7 +105,7 @@ void CameraMicroservice::process_mavlink_message(mavlink_message_t msg) {
                     // acknowledge the command, no reply
                     mavlink_message_t ack;
                     mavlink_msg_command_ack_pack(this->m_sysid, // mark the message as being from the local system ID
-                                                 SERVICE_COMPID,  // and from the camera component
+                                                 this->m_compid,  // and from this component
                                                  &ack,
                                                  OPENHD_CMD_GET_CAMERA_SETTINGS, // the command we're ack'ing
                                                  MAV_CMD_ACK_OK,

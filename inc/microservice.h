@@ -18,6 +18,7 @@ public:
     void start_receive();    
     void send_heartbeat(const boost::system::error_code& error);
     void set_sysid(int8_t sysid);
+    void set_compid(int8_t compid);
 
     void setup();
     void handle_receive(const boost::system::error_code& error, std::size_t recvlen);
@@ -25,7 +26,7 @@ public:
 
 protected:
     int8_t m_sysid;
-
+    int8_t m_compid;
     char m_recv_buf[1024];
 
     boost::asio::ip::tcp::socket m_socket;
