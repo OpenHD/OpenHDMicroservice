@@ -2,6 +2,7 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/reboot.h>
 
 #include <iostream>
 
@@ -87,4 +88,90 @@ void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code
 }
 
 
-void PowerMicroservice::process_mavlink_message(mavlink_message_t msg) {}
+void PowerMicroservice::process_mavlink_message(mavlink_message_t msg) {
+        switch (msg.msgid) {
+        case MAVLINK_MSG_ID_PARAM_REQUEST_LIST: {
+            // will be used for service-specific settings
+            std::cout << "MAVLINK_MSG_ID_PARAM_REQUEST_LIST" << std::endl;
+
+            mavlink_param_request_list_t request;
+            mavlink_msg_param_request_list_decode(&msg, &request);
+            break;
+        }
+        case MAVLINK_MSG_ID_COMMAND_LONG: {
+            mavlink_command_long_t command;
+            mavlink_msg_command_long_decode(&msg, &command);
+
+            // only process commands sent to this system or broadcast to all systems
+            if ((command.target_system != this->m_sysid && command.target_system != 0)) {
+                return;
+            }
+
+            // only process commands sent to this component or boadcast to all components on this system
+            if ((command.target_component != this->m_compid && command.target_component != MAV_COMP_ID_ALL)) {
+                return;
+            }
+
+            switch (command.command) {
+                case OPENHD_CMD_POWER_REBOOT: {
+                    std::cout << "OPENHD_CMD_POWER_REBOOT" << std::endl;
+                    uint8_t raw[MAVLINK_MAX_PACKET_LEN];
+                    int len = 0;
+
+                    // acknowledge the command, no reply
+                    mavlink_message_t ack;
+                    mavlink_msg_command_ack_pack(this->m_sysid, // mark the message as being from the local system ID
+                                                 this->m_compid,  // and from this component
+                                                 &ack,
+                                                 OPENHD_CMD_POWER_REBOOT, // the command we're ack'ing
+                                                 MAV_CMD_ACK_OK,
+                                                 0,
+                                                 0,
+                                                 msg.sysid, // send ack to the senders system ID...
+                                                 msg.compid); // ... and the senders component ID
+                    len = mavlink_msg_to_send_buffer(raw, &ack);
+                    
+                    boost::system::error_code err;
+                    this->m_socket.send(boost::asio::buffer(raw, len), 0, err);
+                    sync();
+                    sleep(3);
+                    reboot(RB_AUTOBOOT);
+                    break;
+                }
+                case OPENHD_CMD_POWER_SHUTDOWN: {
+                    std::cout << "OPENHD_CMD_POWER_SHUTDOWN" << std::endl;
+                    uint8_t raw[MAVLINK_MAX_PACKET_LEN];
+                    int len = 0;
+
+                    // acknowledge the command, no reply
+                    mavlink_message_t ack;
+                    mavlink_msg_command_ack_pack(this->m_sysid, // mark the message as being from the local system ID
+                                                 this->m_compid,  // and from this component
+                                                 &ack,
+                                                 OPENHD_CMD_POWER_SHUTDOWN, // the command we're ack'ing
+                                                 MAV_CMD_ACK_OK,
+                                                 0,
+                                                 0,
+                                                 msg.sysid, // send ack to the senders system ID...
+                                                 msg.compid); // ... and the senders component ID
+                    len = mavlink_msg_to_send_buffer(raw, &ack);
+                    
+                    boost::system::error_code err;
+                    this->m_socket.send(boost::asio::buffer(raw, len), 0, err);
+                    sync();
+                    sleep(3);
+                    reboot(RB_POWER_OFF);
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+}
+
