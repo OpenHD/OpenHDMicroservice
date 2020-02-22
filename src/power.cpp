@@ -51,13 +51,13 @@ void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code
 
     uint8_t bat_type = MAV_BATTERY_TYPE_LIFE;
 
-    auto vin = (float)read_lifepo4wered(VIN) / 1000.0;
-    auto vout = (float)read_lifepo4wered(VOUT) / 1000.0;
-    auto iout = (float)read_lifepo4wered(IOUT) / 1000.0;
-    auto vbat = (float)read_lifepo4wered(VBAT) / 1000.0;
+    auto vin = read_lifepo4wered(VIN);
+    auto vout = read_lifepo4wered(VOUT);
+    auto iout = read_lifepo4wered(IOUT);
+    auto vbat = read_lifepo4wered(VBAT);
 
     mavlink_message_t outgoing_msg;
-    mavlink_msg_openhd_ground_power_pack(this->m_sysid, this->m_compid, &outgoing_msg, vin, vout, vbat, iout, bat_type);
+    mavlink_msg_openhd_ground_power_pack(this->m_sysid, this->m_compid, &outgoing_msg, (float)vin / 1000.0, (float)vout / 1000.0, (float)vbat / 1000.0, (float)iout / 1000.0, bat_type);
     len = mavlink_msg_to_send_buffer(raw, &outgoing_msg);
 
     boost::system::error_code err;
