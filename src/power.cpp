@@ -37,9 +37,17 @@ PowerMicroservice::PowerMicroservice(boost::asio::io_service &io_service): Micro
 void PowerMicroservice::setup() {
     std::cout << "PowerMicroservice::setup()" << std::endl;
     Microservice::setup();
-    this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
-                                                this, 
-                                                boost::asio::placeholders::error));
+    switch (m_sensor_type) {
+        case PowerSensorLifepo4weredPi: {
+            this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
+                                                        this, 
+                                                        boost::asio::placeholders::error));
+            break;
+        }
+        default: {
+            break;
+        }
+    }
 }
 
 

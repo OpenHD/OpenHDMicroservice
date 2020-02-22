@@ -10,6 +10,12 @@
 
 #include "microservice.h"
 
+typedef enum PowerSensor {
+    PowerSensorNone,
+    PowerSensorLifepo4weredPi,
+    PowerSensorINA2XX
+} PowerSensor;
+
 class PowerMicroservice: public Microservice {
 public:
     PowerMicroservice(boost::asio::io_service &io_service);
@@ -23,6 +29,7 @@ public:
  private:
     boost::posix_time::seconds m_status_interval;
     boost::asio::deadline_timer m_status_timer;
+    PowerSensor m_sensor_type = PowerSensorNone;
 };
 
 #endif
