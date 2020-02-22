@@ -42,7 +42,9 @@ typedef enum OPENHD_CMD
    OPENHD_CMD_GET_CAMERA_SETTINGS=11200, /* Get Open.HD camera settings |Reserved (all remaining params)|  */
    OPENHD_CMD_SET_CAMERA_SETTINGS=11201, /* Set Open.HD camera settings |Brightness level| Contrast level| Saturation level|  */
    OPENHD_CMD_SET_GPIOS=11300, /* Set Open.HD GPIO state |Pin bitpattern to set|  */
-   OPENHD_CMD_ENUM_END=11301, /*  | */
+   OPENHD_CMD_POWER_SHUTDOWN=11400, /* Safe shutdown target system | */
+   OPENHD_CMD_POWER_REBOOT=11401, /* Reboot target system | */
+   OPENHD_CMD_ENUM_END=11402, /*  | */
 } OPENHD_CMD;
 #endif
 
