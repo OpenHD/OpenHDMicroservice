@@ -65,8 +65,8 @@ void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code
 
     this->m_status_timer.expires_at(this->m_status_timer.expires_at() + this->m_status_interval);
     this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
-                                         this, 
-                                         boost::asio::placeholders::error));
+                                                this, 
+                                                boost::asio::placeholders::error));
 }
 
 
