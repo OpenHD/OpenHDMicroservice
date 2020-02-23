@@ -9,9 +9,9 @@ typedef struct __mavlink_openhd_ground_power_t {
  float vout; /*<  vout*/
  float vbat; /*<  vbat*/
  float iout; /*<  iout*/
- uint8_t type; /*<  Type (chemistry) of the battery*/
  uint8_t target_system; /*<  system id of the requesting system*/
  uint8_t target_component; /*<  component id of the requesting component*/
+ uint8_t type; /*<  Type (chemistry) of the battery*/
 }) mavlink_openhd_ground_power_t;
 
 #define MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN 19
@@ -19,8 +19,8 @@ typedef struct __mavlink_openhd_ground_power_t {
 #define MAVLINK_MSG_ID_1240_LEN 19
 #define MAVLINK_MSG_ID_1240_MIN_LEN 19
 
-#define MAVLINK_MSG_ID_OPENHD_GROUND_POWER_CRC 175
-#define MAVLINK_MSG_ID_1240_CRC 175
+#define MAVLINK_MSG_ID_OPENHD_GROUND_POWER_CRC 166
+#define MAVLINK_MSG_ID_1240_CRC 166
 
 
 
@@ -29,26 +29,26 @@ typedef struct __mavlink_openhd_ground_power_t {
     1240, \
     "OPENHD_GROUND_POWER", \
     7, \
-    {  { "vin", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_openhd_ground_power_t, vin) }, \
+    {  { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 16, offsetof(mavlink_openhd_ground_power_t, target_system) }, \
+         { "target_component", NULL, MAVLINK_TYPE_UINT8_T, 0, 17, offsetof(mavlink_openhd_ground_power_t, target_component) }, \
+         { "vin", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_openhd_ground_power_t, vin) }, \
          { "vout", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_openhd_ground_power_t, vout) }, \
          { "vbat", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_openhd_ground_power_t, vbat) }, \
          { "iout", NULL, MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_openhd_ground_power_t, iout) }, \
-         { "type", NULL, MAVLINK_TYPE_UINT8_T, 0, 16, offsetof(mavlink_openhd_ground_power_t, type) }, \
-         { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 17, offsetof(mavlink_openhd_ground_power_t, target_system) }, \
-         { "target_component", NULL, MAVLINK_TYPE_UINT8_T, 0, 18, offsetof(mavlink_openhd_ground_power_t, target_component) }, \
+         { "type", NULL, MAVLINK_TYPE_UINT8_T, 0, 18, offsetof(mavlink_openhd_ground_power_t, type) }, \
          } \
 }
 #else
 #define MAVLINK_MESSAGE_INFO_OPENHD_GROUND_POWER { \
     "OPENHD_GROUND_POWER", \
     7, \
-    {  { "vin", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_openhd_ground_power_t, vin) }, \
+    {  { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 16, offsetof(mavlink_openhd_ground_power_t, target_system) }, \
+         { "target_component", NULL, MAVLINK_TYPE_UINT8_T, 0, 17, offsetof(mavlink_openhd_ground_power_t, target_component) }, \
+         { "vin", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_openhd_ground_power_t, vin) }, \
          { "vout", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_openhd_ground_power_t, vout) }, \
          { "vbat", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_openhd_ground_power_t, vbat) }, \
          { "iout", NULL, MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_openhd_ground_power_t, iout) }, \
-         { "type", NULL, MAVLINK_TYPE_UINT8_T, 0, 16, offsetof(mavlink_openhd_ground_power_t, type) }, \
-         { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 17, offsetof(mavlink_openhd_ground_power_t, target_system) }, \
-         { "target_component", NULL, MAVLINK_TYPE_UINT8_T, 0, 18, offsetof(mavlink_openhd_ground_power_t, target_component) }, \
+         { "type", NULL, MAVLINK_TYPE_UINT8_T, 0, 18, offsetof(mavlink_openhd_ground_power_t, type) }, \
          } \
 }
 #endif
@@ -59,17 +59,17 @@ typedef struct __mavlink_openhd_ground_power_t {
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param msg The MAVLink message to compress the data into
  *
+ * @param target_system  system id of the requesting system
+ * @param target_component  component id of the requesting component
  * @param vin  vin
  * @param vout  vout
  * @param vbat  vbat
  * @param iout  iout
  * @param type  Type (chemistry) of the battery
- * @param target_system  system id of the requesting system
- * @param target_component  component id of the requesting component
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_openhd_ground_power_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               float vin, float vout, float vbat, float iout, uint8_t type, uint8_t target_system, uint8_t target_component)
+                               uint8_t target_system, uint8_t target_component, float vin, float vout, float vbat, float iout, uint8_t type)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN];
@@ -77,9 +77,9 @@ static inline uint16_t mavlink_msg_openhd_ground_power_pack(uint8_t system_id, u
     _mav_put_float(buf, 4, vout);
     _mav_put_float(buf, 8, vbat);
     _mav_put_float(buf, 12, iout);
-    _mav_put_uint8_t(buf, 16, type);
-    _mav_put_uint8_t(buf, 17, target_system);
-    _mav_put_uint8_t(buf, 18, target_component);
+    _mav_put_uint8_t(buf, 16, target_system);
+    _mav_put_uint8_t(buf, 17, target_component);
+    _mav_put_uint8_t(buf, 18, type);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN);
 #else
@@ -88,9 +88,9 @@ static inline uint16_t mavlink_msg_openhd_ground_power_pack(uint8_t system_id, u
     packet.vout = vout;
     packet.vbat = vbat;
     packet.iout = iout;
-    packet.type = type;
     packet.target_system = target_system;
     packet.target_component = target_component;
+    packet.type = type;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN);
 #endif
@@ -105,18 +105,18 @@ static inline uint16_t mavlink_msg_openhd_ground_power_pack(uint8_t system_id, u
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
+ * @param target_system  system id of the requesting system
+ * @param target_component  component id of the requesting component
  * @param vin  vin
  * @param vout  vout
  * @param vbat  vbat
  * @param iout  iout
  * @param type  Type (chemistry) of the battery
- * @param target_system  system id of the requesting system
- * @param target_component  component id of the requesting component
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_openhd_ground_power_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   float vin,float vout,float vbat,float iout,uint8_t type,uint8_t target_system,uint8_t target_component)
+                                   uint8_t target_system,uint8_t target_component,float vin,float vout,float vbat,float iout,uint8_t type)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN];
@@ -124,9 +124,9 @@ static inline uint16_t mavlink_msg_openhd_ground_power_pack_chan(uint8_t system_
     _mav_put_float(buf, 4, vout);
     _mav_put_float(buf, 8, vbat);
     _mav_put_float(buf, 12, iout);
-    _mav_put_uint8_t(buf, 16, type);
-    _mav_put_uint8_t(buf, 17, target_system);
-    _mav_put_uint8_t(buf, 18, target_component);
+    _mav_put_uint8_t(buf, 16, target_system);
+    _mav_put_uint8_t(buf, 17, target_component);
+    _mav_put_uint8_t(buf, 18, type);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN);
 #else
@@ -135,9 +135,9 @@ static inline uint16_t mavlink_msg_openhd_ground_power_pack_chan(uint8_t system_
     packet.vout = vout;
     packet.vbat = vbat;
     packet.iout = iout;
-    packet.type = type;
     packet.target_system = target_system;
     packet.target_component = target_component;
+    packet.type = type;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN);
 #endif
@@ -156,7 +156,7 @@ static inline uint16_t mavlink_msg_openhd_ground_power_pack_chan(uint8_t system_
  */
 static inline uint16_t mavlink_msg_openhd_ground_power_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_openhd_ground_power_t* openhd_ground_power)
 {
-    return mavlink_msg_openhd_ground_power_pack(system_id, component_id, msg, openhd_ground_power->vin, openhd_ground_power->vout, openhd_ground_power->vbat, openhd_ground_power->iout, openhd_ground_power->type, openhd_ground_power->target_system, openhd_ground_power->target_component);
+    return mavlink_msg_openhd_ground_power_pack(system_id, component_id, msg, openhd_ground_power->target_system, openhd_ground_power->target_component, openhd_ground_power->vin, openhd_ground_power->vout, openhd_ground_power->vbat, openhd_ground_power->iout, openhd_ground_power->type);
 }
 
 /**
@@ -170,24 +170,24 @@ static inline uint16_t mavlink_msg_openhd_ground_power_encode(uint8_t system_id,
  */
 static inline uint16_t mavlink_msg_openhd_ground_power_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_openhd_ground_power_t* openhd_ground_power)
 {
-    return mavlink_msg_openhd_ground_power_pack_chan(system_id, component_id, chan, msg, openhd_ground_power->vin, openhd_ground_power->vout, openhd_ground_power->vbat, openhd_ground_power->iout, openhd_ground_power->type, openhd_ground_power->target_system, openhd_ground_power->target_component);
+    return mavlink_msg_openhd_ground_power_pack_chan(system_id, component_id, chan, msg, openhd_ground_power->target_system, openhd_ground_power->target_component, openhd_ground_power->vin, openhd_ground_power->vout, openhd_ground_power->vbat, openhd_ground_power->iout, openhd_ground_power->type);
 }
 
 /**
  * @brief Send a openhd_ground_power message
  * @param chan MAVLink channel to send the message
  *
+ * @param target_system  system id of the requesting system
+ * @param target_component  component id of the requesting component
  * @param vin  vin
  * @param vout  vout
  * @param vbat  vbat
  * @param iout  iout
  * @param type  Type (chemistry) of the battery
- * @param target_system  system id of the requesting system
- * @param target_component  component id of the requesting component
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_openhd_ground_power_send(mavlink_channel_t chan, float vin, float vout, float vbat, float iout, uint8_t type, uint8_t target_system, uint8_t target_component)
+static inline void mavlink_msg_openhd_ground_power_send(mavlink_channel_t chan, uint8_t target_system, uint8_t target_component, float vin, float vout, float vbat, float iout, uint8_t type)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN];
@@ -195,9 +195,9 @@ static inline void mavlink_msg_openhd_ground_power_send(mavlink_channel_t chan, 
     _mav_put_float(buf, 4, vout);
     _mav_put_float(buf, 8, vbat);
     _mav_put_float(buf, 12, iout);
-    _mav_put_uint8_t(buf, 16, type);
-    _mav_put_uint8_t(buf, 17, target_system);
-    _mav_put_uint8_t(buf, 18, target_component);
+    _mav_put_uint8_t(buf, 16, target_system);
+    _mav_put_uint8_t(buf, 17, target_component);
+    _mav_put_uint8_t(buf, 18, type);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_OPENHD_GROUND_POWER, buf, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_MIN_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_CRC);
 #else
@@ -206,9 +206,9 @@ static inline void mavlink_msg_openhd_ground_power_send(mavlink_channel_t chan, 
     packet.vout = vout;
     packet.vbat = vbat;
     packet.iout = iout;
-    packet.type = type;
     packet.target_system = target_system;
     packet.target_component = target_component;
+    packet.type = type;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_OPENHD_GROUND_POWER, (const char *)&packet, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_MIN_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_CRC);
 #endif
@@ -222,7 +222,7 @@ static inline void mavlink_msg_openhd_ground_power_send(mavlink_channel_t chan, 
 static inline void mavlink_msg_openhd_ground_power_send_struct(mavlink_channel_t chan, const mavlink_openhd_ground_power_t* openhd_ground_power)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_openhd_ground_power_send(chan, openhd_ground_power->vin, openhd_ground_power->vout, openhd_ground_power->vbat, openhd_ground_power->iout, openhd_ground_power->type, openhd_ground_power->target_system, openhd_ground_power->target_component);
+    mavlink_msg_openhd_ground_power_send(chan, openhd_ground_power->target_system, openhd_ground_power->target_component, openhd_ground_power->vin, openhd_ground_power->vout, openhd_ground_power->vbat, openhd_ground_power->iout, openhd_ground_power->type);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_OPENHD_GROUND_POWER, (const char *)openhd_ground_power, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_MIN_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_CRC);
 #endif
@@ -236,7 +236,7 @@ static inline void mavlink_msg_openhd_ground_power_send_struct(mavlink_channel_t
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_openhd_ground_power_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  float vin, float vout, float vbat, float iout, uint8_t type, uint8_t target_system, uint8_t target_component)
+static inline void mavlink_msg_openhd_ground_power_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t target_system, uint8_t target_component, float vin, float vout, float vbat, float iout, uint8_t type)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
@@ -244,9 +244,9 @@ static inline void mavlink_msg_openhd_ground_power_send_buf(mavlink_message_t *m
     _mav_put_float(buf, 4, vout);
     _mav_put_float(buf, 8, vbat);
     _mav_put_float(buf, 12, iout);
-    _mav_put_uint8_t(buf, 16, type);
-    _mav_put_uint8_t(buf, 17, target_system);
-    _mav_put_uint8_t(buf, 18, target_component);
+    _mav_put_uint8_t(buf, 16, target_system);
+    _mav_put_uint8_t(buf, 17, target_component);
+    _mav_put_uint8_t(buf, 18, type);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_OPENHD_GROUND_POWER, buf, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_MIN_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_CRC);
 #else
@@ -255,9 +255,9 @@ static inline void mavlink_msg_openhd_ground_power_send_buf(mavlink_message_t *m
     packet->vout = vout;
     packet->vbat = vbat;
     packet->iout = iout;
-    packet->type = type;
     packet->target_system = target_system;
     packet->target_component = target_component;
+    packet->type = type;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_OPENHD_GROUND_POWER, (const char *)packet, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_MIN_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_CRC);
 #endif
@@ -268,6 +268,26 @@ static inline void mavlink_msg_openhd_ground_power_send_buf(mavlink_message_t *m
 
 // MESSAGE OPENHD_GROUND_POWER UNPACKING
 
+
+/**
+ * @brief Get field target_system from openhd_ground_power message
+ *
+ * @return  system id of the requesting system
+ */
+static inline uint8_t mavlink_msg_openhd_ground_power_get_target_system(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_uint8_t(msg,  16);
+}
+
+/**
+ * @brief Get field target_component from openhd_ground_power message
+ *
+ * @return  component id of the requesting component
+ */
+static inline uint8_t mavlink_msg_openhd_ground_power_get_target_component(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_uint8_t(msg,  17);
+}
 
 /**
  * @brief Get field vin from openhd_ground_power message
@@ -316,26 +336,6 @@ static inline float mavlink_msg_openhd_ground_power_get_iout(const mavlink_messa
  */
 static inline uint8_t mavlink_msg_openhd_ground_power_get_type(const mavlink_message_t* msg)
 {
-    return _MAV_RETURN_uint8_t(msg,  16);
-}
-
-/**
- * @brief Get field target_system from openhd_ground_power message
- *
- * @return  system id of the requesting system
- */
-static inline uint8_t mavlink_msg_openhd_ground_power_get_target_system(const mavlink_message_t* msg)
-{
-    return _MAV_RETURN_uint8_t(msg,  17);
-}
-
-/**
- * @brief Get field target_component from openhd_ground_power message
- *
- * @return  component id of the requesting component
- */
-static inline uint8_t mavlink_msg_openhd_ground_power_get_target_component(const mavlink_message_t* msg)
-{
     return _MAV_RETURN_uint8_t(msg,  18);
 }
 
@@ -352,9 +352,9 @@ static inline void mavlink_msg_openhd_ground_power_decode(const mavlink_message_
     openhd_ground_power->vout = mavlink_msg_openhd_ground_power_get_vout(msg);
     openhd_ground_power->vbat = mavlink_msg_openhd_ground_power_get_vbat(msg);
     openhd_ground_power->iout = mavlink_msg_openhd_ground_power_get_iout(msg);
-    openhd_ground_power->type = mavlink_msg_openhd_ground_power_get_type(msg);
     openhd_ground_power->target_system = mavlink_msg_openhd_ground_power_get_target_system(msg);
     openhd_ground_power->target_component = mavlink_msg_openhd_ground_power_get_target_component(msg);
+    openhd_ground_power->type = mavlink_msg_openhd_ground_power_get_type(msg);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN? msg->len : MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN;
         memset(openhd_ground_power, 0, MAVLINK_MSG_ID_OPENHD_GROUND_POWER_LEN);
