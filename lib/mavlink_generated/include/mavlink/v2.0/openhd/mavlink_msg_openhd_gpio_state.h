@@ -6,15 +6,17 @@
 MAVPACKED(
 typedef struct __mavlink_openhd_gpio_state_t {
  uint8_t pins; /*<  pins*/
+ uint8_t target_system; /*<  system id of the requesting system*/
+ uint8_t target_component; /*<  component id of the requesting component*/
 }) mavlink_openhd_gpio_state_t;
 
-#define MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN 1
-#define MAVLINK_MSG_ID_OPENHD_GPIO_STATE_MIN_LEN 1
-#define MAVLINK_MSG_ID_1250_LEN 1
-#define MAVLINK_MSG_ID_1250_MIN_LEN 1
+#define MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN 3
+#define MAVLINK_MSG_ID_OPENHD_GPIO_STATE_MIN_LEN 3
+#define MAVLINK_MSG_ID_1250_LEN 3
+#define MAVLINK_MSG_ID_1250_MIN_LEN 3
 
-#define MAVLINK_MSG_ID_OPENHD_GPIO_STATE_CRC 113
-#define MAVLINK_MSG_ID_1250_CRC 113
+#define MAVLINK_MSG_ID_OPENHD_GPIO_STATE_CRC 160
+#define MAVLINK_MSG_ID_1250_CRC 160
 
 
 
@@ -22,15 +24,19 @@ typedef struct __mavlink_openhd_gpio_state_t {
 #define MAVLINK_MESSAGE_INFO_OPENHD_GPIO_STATE { \
     1250, \
     "OPENHD_GPIO_STATE", \
-    1, \
+    3, \
     {  { "pins", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_openhd_gpio_state_t, pins) }, \
+         { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_openhd_gpio_state_t, target_system) }, \
+         { "target_component", NULL, MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_openhd_gpio_state_t, target_component) }, \
          } \
 }
 #else
 #define MAVLINK_MESSAGE_INFO_OPENHD_GPIO_STATE { \
     "OPENHD_GPIO_STATE", \
-    1, \
+    3, \
     {  { "pins", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_openhd_gpio_state_t, pins) }, \
+         { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_openhd_gpio_state_t, target_system) }, \
+         { "target_component", NULL, MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_openhd_gpio_state_t, target_component) }, \
          } \
 }
 #endif
@@ -42,19 +48,25 @@ typedef struct __mavlink_openhd_gpio_state_t {
  * @param msg The MAVLink message to compress the data into
  *
  * @param pins  pins
+ * @param target_system  system id of the requesting system
+ * @param target_component  component id of the requesting component
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_openhd_gpio_state_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               uint8_t pins)
+                               uint8_t pins, uint8_t target_system, uint8_t target_component)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN];
     _mav_put_uint8_t(buf, 0, pins);
+    _mav_put_uint8_t(buf, 1, target_system);
+    _mav_put_uint8_t(buf, 2, target_component);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN);
 #else
     mavlink_openhd_gpio_state_t packet;
     packet.pins = pins;
+    packet.target_system = target_system;
+    packet.target_component = target_component;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN);
 #endif
@@ -70,20 +82,26 @@ static inline uint16_t mavlink_msg_openhd_gpio_state_pack(uint8_t system_id, uin
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
  * @param pins  pins
+ * @param target_system  system id of the requesting system
+ * @param target_component  component id of the requesting component
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_openhd_gpio_state_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   uint8_t pins)
+                                   uint8_t pins,uint8_t target_system,uint8_t target_component)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN];
     _mav_put_uint8_t(buf, 0, pins);
+    _mav_put_uint8_t(buf, 1, target_system);
+    _mav_put_uint8_t(buf, 2, target_component);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN);
 #else
     mavlink_openhd_gpio_state_t packet;
     packet.pins = pins;
+    packet.target_system = target_system;
+    packet.target_component = target_component;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN);
 #endif
@@ -102,7 +120,7 @@ static inline uint16_t mavlink_msg_openhd_gpio_state_pack_chan(uint8_t system_id
  */
 static inline uint16_t mavlink_msg_openhd_gpio_state_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_openhd_gpio_state_t* openhd_gpio_state)
 {
-    return mavlink_msg_openhd_gpio_state_pack(system_id, component_id, msg, openhd_gpio_state->pins);
+    return mavlink_msg_openhd_gpio_state_pack(system_id, component_id, msg, openhd_gpio_state->pins, openhd_gpio_state->target_system, openhd_gpio_state->target_component);
 }
 
 /**
@@ -116,7 +134,7 @@ static inline uint16_t mavlink_msg_openhd_gpio_state_encode(uint8_t system_id, u
  */
 static inline uint16_t mavlink_msg_openhd_gpio_state_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_openhd_gpio_state_t* openhd_gpio_state)
 {
-    return mavlink_msg_openhd_gpio_state_pack_chan(system_id, component_id, chan, msg, openhd_gpio_state->pins);
+    return mavlink_msg_openhd_gpio_state_pack_chan(system_id, component_id, chan, msg, openhd_gpio_state->pins, openhd_gpio_state->target_system, openhd_gpio_state->target_component);
 }
 
 /**
@@ -124,19 +142,25 @@ static inline uint16_t mavlink_msg_openhd_gpio_state_encode_chan(uint8_t system_
  * @param chan MAVLink channel to send the message
  *
  * @param pins  pins
+ * @param target_system  system id of the requesting system
+ * @param target_component  component id of the requesting component
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_openhd_gpio_state_send(mavlink_channel_t chan, uint8_t pins)
+static inline void mavlink_msg_openhd_gpio_state_send(mavlink_channel_t chan, uint8_t pins, uint8_t target_system, uint8_t target_component)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN];
     _mav_put_uint8_t(buf, 0, pins);
+    _mav_put_uint8_t(buf, 1, target_system);
+    _mav_put_uint8_t(buf, 2, target_component);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_OPENHD_GPIO_STATE, buf, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_MIN_LEN, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_CRC);
 #else
     mavlink_openhd_gpio_state_t packet;
     packet.pins = pins;
+    packet.target_system = target_system;
+    packet.target_component = target_component;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_OPENHD_GPIO_STATE, (const char *)&packet, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_MIN_LEN, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_CRC);
 #endif
@@ -150,7 +174,7 @@ static inline void mavlink_msg_openhd_gpio_state_send(mavlink_channel_t chan, ui
 static inline void mavlink_msg_openhd_gpio_state_send_struct(mavlink_channel_t chan, const mavlink_openhd_gpio_state_t* openhd_gpio_state)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_openhd_gpio_state_send(chan, openhd_gpio_state->pins);
+    mavlink_msg_openhd_gpio_state_send(chan, openhd_gpio_state->pins, openhd_gpio_state->target_system, openhd_gpio_state->target_component);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_OPENHD_GPIO_STATE, (const char *)openhd_gpio_state, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_MIN_LEN, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_CRC);
 #endif
@@ -164,16 +188,20 @@ static inline void mavlink_msg_openhd_gpio_state_send_struct(mavlink_channel_t c
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_openhd_gpio_state_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t pins)
+static inline void mavlink_msg_openhd_gpio_state_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t pins, uint8_t target_system, uint8_t target_component)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
     _mav_put_uint8_t(buf, 0, pins);
+    _mav_put_uint8_t(buf, 1, target_system);
+    _mav_put_uint8_t(buf, 2, target_component);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_OPENHD_GPIO_STATE, buf, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_MIN_LEN, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_CRC);
 #else
     mavlink_openhd_gpio_state_t *packet = (mavlink_openhd_gpio_state_t *)msgbuf;
     packet->pins = pins;
+    packet->target_system = target_system;
+    packet->target_component = target_component;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_OPENHD_GPIO_STATE, (const char *)packet, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_MIN_LEN, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_CRC);
 #endif
@@ -196,6 +224,26 @@ static inline uint8_t mavlink_msg_openhd_gpio_state_get_pins(const mavlink_messa
 }
 
 /**
+ * @brief Get field target_system from openhd_gpio_state message
+ *
+ * @return  system id of the requesting system
+ */
+static inline uint8_t mavlink_msg_openhd_gpio_state_get_target_system(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_uint8_t(msg,  1);
+}
+
+/**
+ * @brief Get field target_component from openhd_gpio_state message
+ *
+ * @return  component id of the requesting component
+ */
+static inline uint8_t mavlink_msg_openhd_gpio_state_get_target_component(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_uint8_t(msg,  2);
+}
+
+/**
  * @brief Decode a openhd_gpio_state message into a struct
  *
  * @param msg The message to decode
@@ -205,6 +253,8 @@ static inline void mavlink_msg_openhd_gpio_state_decode(const mavlink_message_t*
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     openhd_gpio_state->pins = mavlink_msg_openhd_gpio_state_get_pins(msg);
+    openhd_gpio_state->target_system = mavlink_msg_openhd_gpio_state_get_target_system(msg);
+    openhd_gpio_state->target_component = mavlink_msg_openhd_gpio_state_get_target_component(msg);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN? msg->len : MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN;
         memset(openhd_gpio_state, 0, MAVLINK_MSG_ID_OPENHD_GPIO_STATE_LEN);

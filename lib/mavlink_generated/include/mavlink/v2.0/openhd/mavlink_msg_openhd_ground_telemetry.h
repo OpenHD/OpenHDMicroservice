@@ -11,15 +11,17 @@ typedef struct __mavlink_openhd_ground_telemetry_t {
  uint32_t kbitrate; /*<  kbitrate*/
  uint32_t kbitrate_measured; /*<  kbitrate_measured*/
  uint32_t kbitrate_set; /*<  kbitrate_set*/
+ uint8_t target_system; /*<  system id of the requesting system*/
+ uint8_t target_component; /*<  component id of the requesting component*/
 }) mavlink_openhd_ground_telemetry_t;
 
-#define MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN 24
-#define MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_MIN_LEN 24
-#define MAVLINK_MSG_ID_1210_LEN 24
-#define MAVLINK_MSG_ID_1210_MIN_LEN 24
+#define MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN 26
+#define MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_MIN_LEN 26
+#define MAVLINK_MSG_ID_1210_LEN 26
+#define MAVLINK_MSG_ID_1210_MIN_LEN 26
 
-#define MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_CRC 19
-#define MAVLINK_MSG_ID_1210_CRC 19
+#define MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_CRC 234
+#define MAVLINK_MSG_ID_1210_CRC 234
 
 
 
@@ -27,25 +29,29 @@ typedef struct __mavlink_openhd_ground_telemetry_t {
 #define MAVLINK_MESSAGE_INFO_OPENHD_GROUND_TELEMETRY { \
     1210, \
     "OPENHD_GROUND_TELEMETRY", \
-    6, \
+    8, \
     {  { "damaged_block_cnt", NULL, MAVLINK_TYPE_UINT32_T, 0, 0, offsetof(mavlink_openhd_ground_telemetry_t, damaged_block_cnt) }, \
          { "lost_packet_cnt", NULL, MAVLINK_TYPE_UINT32_T, 0, 4, offsetof(mavlink_openhd_ground_telemetry_t, lost_packet_cnt) }, \
          { "received_packet_cnt", NULL, MAVLINK_TYPE_UINT32_T, 0, 8, offsetof(mavlink_openhd_ground_telemetry_t, received_packet_cnt) }, \
          { "kbitrate", NULL, MAVLINK_TYPE_UINT32_T, 0, 12, offsetof(mavlink_openhd_ground_telemetry_t, kbitrate) }, \
          { "kbitrate_measured", NULL, MAVLINK_TYPE_UINT32_T, 0, 16, offsetof(mavlink_openhd_ground_telemetry_t, kbitrate_measured) }, \
          { "kbitrate_set", NULL, MAVLINK_TYPE_UINT32_T, 0, 20, offsetof(mavlink_openhd_ground_telemetry_t, kbitrate_set) }, \
+         { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 24, offsetof(mavlink_openhd_ground_telemetry_t, target_system) }, \
+         { "target_component", NULL, MAVLINK_TYPE_UINT8_T, 0, 25, offsetof(mavlink_openhd_ground_telemetry_t, target_component) }, \
          } \
 }
 #else
 #define MAVLINK_MESSAGE_INFO_OPENHD_GROUND_TELEMETRY { \
     "OPENHD_GROUND_TELEMETRY", \
-    6, \
+    8, \
     {  { "damaged_block_cnt", NULL, MAVLINK_TYPE_UINT32_T, 0, 0, offsetof(mavlink_openhd_ground_telemetry_t, damaged_block_cnt) }, \
          { "lost_packet_cnt", NULL, MAVLINK_TYPE_UINT32_T, 0, 4, offsetof(mavlink_openhd_ground_telemetry_t, lost_packet_cnt) }, \
          { "received_packet_cnt", NULL, MAVLINK_TYPE_UINT32_T, 0, 8, offsetof(mavlink_openhd_ground_telemetry_t, received_packet_cnt) }, \
          { "kbitrate", NULL, MAVLINK_TYPE_UINT32_T, 0, 12, offsetof(mavlink_openhd_ground_telemetry_t, kbitrate) }, \
          { "kbitrate_measured", NULL, MAVLINK_TYPE_UINT32_T, 0, 16, offsetof(mavlink_openhd_ground_telemetry_t, kbitrate_measured) }, \
          { "kbitrate_set", NULL, MAVLINK_TYPE_UINT32_T, 0, 20, offsetof(mavlink_openhd_ground_telemetry_t, kbitrate_set) }, \
+         { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 24, offsetof(mavlink_openhd_ground_telemetry_t, target_system) }, \
+         { "target_component", NULL, MAVLINK_TYPE_UINT8_T, 0, 25, offsetof(mavlink_openhd_ground_telemetry_t, target_component) }, \
          } \
 }
 #endif
@@ -62,10 +68,12 @@ typedef struct __mavlink_openhd_ground_telemetry_t {
  * @param kbitrate  kbitrate
  * @param kbitrate_measured  kbitrate_measured
  * @param kbitrate_set  kbitrate_set
+ * @param target_system  system id of the requesting system
+ * @param target_component  component id of the requesting component
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_openhd_ground_telemetry_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               uint32_t damaged_block_cnt, uint32_t lost_packet_cnt, uint32_t received_packet_cnt, uint32_t kbitrate, uint32_t kbitrate_measured, uint32_t kbitrate_set)
+                               uint32_t damaged_block_cnt, uint32_t lost_packet_cnt, uint32_t received_packet_cnt, uint32_t kbitrate, uint32_t kbitrate_measured, uint32_t kbitrate_set, uint8_t target_system, uint8_t target_component)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN];
@@ -75,6 +83,8 @@ static inline uint16_t mavlink_msg_openhd_ground_telemetry_pack(uint8_t system_i
     _mav_put_uint32_t(buf, 12, kbitrate);
     _mav_put_uint32_t(buf, 16, kbitrate_measured);
     _mav_put_uint32_t(buf, 20, kbitrate_set);
+    _mav_put_uint8_t(buf, 24, target_system);
+    _mav_put_uint8_t(buf, 25, target_component);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN);
 #else
@@ -85,6 +95,8 @@ static inline uint16_t mavlink_msg_openhd_ground_telemetry_pack(uint8_t system_i
     packet.kbitrate = kbitrate;
     packet.kbitrate_measured = kbitrate_measured;
     packet.kbitrate_set = kbitrate_set;
+    packet.target_system = target_system;
+    packet.target_component = target_component;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN);
 #endif
@@ -105,11 +117,13 @@ static inline uint16_t mavlink_msg_openhd_ground_telemetry_pack(uint8_t system_i
  * @param kbitrate  kbitrate
  * @param kbitrate_measured  kbitrate_measured
  * @param kbitrate_set  kbitrate_set
+ * @param target_system  system id of the requesting system
+ * @param target_component  component id of the requesting component
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_openhd_ground_telemetry_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   uint32_t damaged_block_cnt,uint32_t lost_packet_cnt,uint32_t received_packet_cnt,uint32_t kbitrate,uint32_t kbitrate_measured,uint32_t kbitrate_set)
+                                   uint32_t damaged_block_cnt,uint32_t lost_packet_cnt,uint32_t received_packet_cnt,uint32_t kbitrate,uint32_t kbitrate_measured,uint32_t kbitrate_set,uint8_t target_system,uint8_t target_component)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN];
@@ -119,6 +133,8 @@ static inline uint16_t mavlink_msg_openhd_ground_telemetry_pack_chan(uint8_t sys
     _mav_put_uint32_t(buf, 12, kbitrate);
     _mav_put_uint32_t(buf, 16, kbitrate_measured);
     _mav_put_uint32_t(buf, 20, kbitrate_set);
+    _mav_put_uint8_t(buf, 24, target_system);
+    _mav_put_uint8_t(buf, 25, target_component);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN);
 #else
@@ -129,6 +145,8 @@ static inline uint16_t mavlink_msg_openhd_ground_telemetry_pack_chan(uint8_t sys
     packet.kbitrate = kbitrate;
     packet.kbitrate_measured = kbitrate_measured;
     packet.kbitrate_set = kbitrate_set;
+    packet.target_system = target_system;
+    packet.target_component = target_component;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN);
 #endif
@@ -147,7 +165,7 @@ static inline uint16_t mavlink_msg_openhd_ground_telemetry_pack_chan(uint8_t sys
  */
 static inline uint16_t mavlink_msg_openhd_ground_telemetry_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_openhd_ground_telemetry_t* openhd_ground_telemetry)
 {
-    return mavlink_msg_openhd_ground_telemetry_pack(system_id, component_id, msg, openhd_ground_telemetry->damaged_block_cnt, openhd_ground_telemetry->lost_packet_cnt, openhd_ground_telemetry->received_packet_cnt, openhd_ground_telemetry->kbitrate, openhd_ground_telemetry->kbitrate_measured, openhd_ground_telemetry->kbitrate_set);
+    return mavlink_msg_openhd_ground_telemetry_pack(system_id, component_id, msg, openhd_ground_telemetry->damaged_block_cnt, openhd_ground_telemetry->lost_packet_cnt, openhd_ground_telemetry->received_packet_cnt, openhd_ground_telemetry->kbitrate, openhd_ground_telemetry->kbitrate_measured, openhd_ground_telemetry->kbitrate_set, openhd_ground_telemetry->target_system, openhd_ground_telemetry->target_component);
 }
 
 /**
@@ -161,7 +179,7 @@ static inline uint16_t mavlink_msg_openhd_ground_telemetry_encode(uint8_t system
  */
 static inline uint16_t mavlink_msg_openhd_ground_telemetry_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_openhd_ground_telemetry_t* openhd_ground_telemetry)
 {
-    return mavlink_msg_openhd_ground_telemetry_pack_chan(system_id, component_id, chan, msg, openhd_ground_telemetry->damaged_block_cnt, openhd_ground_telemetry->lost_packet_cnt, openhd_ground_telemetry->received_packet_cnt, openhd_ground_telemetry->kbitrate, openhd_ground_telemetry->kbitrate_measured, openhd_ground_telemetry->kbitrate_set);
+    return mavlink_msg_openhd_ground_telemetry_pack_chan(system_id, component_id, chan, msg, openhd_ground_telemetry->damaged_block_cnt, openhd_ground_telemetry->lost_packet_cnt, openhd_ground_telemetry->received_packet_cnt, openhd_ground_telemetry->kbitrate, openhd_ground_telemetry->kbitrate_measured, openhd_ground_telemetry->kbitrate_set, openhd_ground_telemetry->target_system, openhd_ground_telemetry->target_component);
 }
 
 /**
@@ -174,10 +192,12 @@ static inline uint16_t mavlink_msg_openhd_ground_telemetry_encode_chan(uint8_t s
  * @param kbitrate  kbitrate
  * @param kbitrate_measured  kbitrate_measured
  * @param kbitrate_set  kbitrate_set
+ * @param target_system  system id of the requesting system
+ * @param target_component  component id of the requesting component
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_openhd_ground_telemetry_send(mavlink_channel_t chan, uint32_t damaged_block_cnt, uint32_t lost_packet_cnt, uint32_t received_packet_cnt, uint32_t kbitrate, uint32_t kbitrate_measured, uint32_t kbitrate_set)
+static inline void mavlink_msg_openhd_ground_telemetry_send(mavlink_channel_t chan, uint32_t damaged_block_cnt, uint32_t lost_packet_cnt, uint32_t received_packet_cnt, uint32_t kbitrate, uint32_t kbitrate_measured, uint32_t kbitrate_set, uint8_t target_system, uint8_t target_component)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN];
@@ -187,6 +207,8 @@ static inline void mavlink_msg_openhd_ground_telemetry_send(mavlink_channel_t ch
     _mav_put_uint32_t(buf, 12, kbitrate);
     _mav_put_uint32_t(buf, 16, kbitrate_measured);
     _mav_put_uint32_t(buf, 20, kbitrate_set);
+    _mav_put_uint8_t(buf, 24, target_system);
+    _mav_put_uint8_t(buf, 25, target_component);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY, buf, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_MIN_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_CRC);
 #else
@@ -197,6 +219,8 @@ static inline void mavlink_msg_openhd_ground_telemetry_send(mavlink_channel_t ch
     packet.kbitrate = kbitrate;
     packet.kbitrate_measured = kbitrate_measured;
     packet.kbitrate_set = kbitrate_set;
+    packet.target_system = target_system;
+    packet.target_component = target_component;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY, (const char *)&packet, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_MIN_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_CRC);
 #endif
@@ -210,7 +234,7 @@ static inline void mavlink_msg_openhd_ground_telemetry_send(mavlink_channel_t ch
 static inline void mavlink_msg_openhd_ground_telemetry_send_struct(mavlink_channel_t chan, const mavlink_openhd_ground_telemetry_t* openhd_ground_telemetry)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_openhd_ground_telemetry_send(chan, openhd_ground_telemetry->damaged_block_cnt, openhd_ground_telemetry->lost_packet_cnt, openhd_ground_telemetry->received_packet_cnt, openhd_ground_telemetry->kbitrate, openhd_ground_telemetry->kbitrate_measured, openhd_ground_telemetry->kbitrate_set);
+    mavlink_msg_openhd_ground_telemetry_send(chan, openhd_ground_telemetry->damaged_block_cnt, openhd_ground_telemetry->lost_packet_cnt, openhd_ground_telemetry->received_packet_cnt, openhd_ground_telemetry->kbitrate, openhd_ground_telemetry->kbitrate_measured, openhd_ground_telemetry->kbitrate_set, openhd_ground_telemetry->target_system, openhd_ground_telemetry->target_component);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY, (const char *)openhd_ground_telemetry, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_MIN_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_CRC);
 #endif
@@ -224,7 +248,7 @@ static inline void mavlink_msg_openhd_ground_telemetry_send_struct(mavlink_chann
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_openhd_ground_telemetry_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint32_t damaged_block_cnt, uint32_t lost_packet_cnt, uint32_t received_packet_cnt, uint32_t kbitrate, uint32_t kbitrate_measured, uint32_t kbitrate_set)
+static inline void mavlink_msg_openhd_ground_telemetry_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint32_t damaged_block_cnt, uint32_t lost_packet_cnt, uint32_t received_packet_cnt, uint32_t kbitrate, uint32_t kbitrate_measured, uint32_t kbitrate_set, uint8_t target_system, uint8_t target_component)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
@@ -234,6 +258,8 @@ static inline void mavlink_msg_openhd_ground_telemetry_send_buf(mavlink_message_
     _mav_put_uint32_t(buf, 12, kbitrate);
     _mav_put_uint32_t(buf, 16, kbitrate_measured);
     _mav_put_uint32_t(buf, 20, kbitrate_set);
+    _mav_put_uint8_t(buf, 24, target_system);
+    _mav_put_uint8_t(buf, 25, target_component);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY, buf, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_MIN_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_CRC);
 #else
@@ -244,6 +270,8 @@ static inline void mavlink_msg_openhd_ground_telemetry_send_buf(mavlink_message_
     packet->kbitrate = kbitrate;
     packet->kbitrate_measured = kbitrate_measured;
     packet->kbitrate_set = kbitrate_set;
+    packet->target_system = target_system;
+    packet->target_component = target_component;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY, (const char *)packet, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_MIN_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_CRC);
 #endif
@@ -316,6 +344,26 @@ static inline uint32_t mavlink_msg_openhd_ground_telemetry_get_kbitrate_set(cons
 }
 
 /**
+ * @brief Get field target_system from openhd_ground_telemetry message
+ *
+ * @return  system id of the requesting system
+ */
+static inline uint8_t mavlink_msg_openhd_ground_telemetry_get_target_system(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_uint8_t(msg,  24);
+}
+
+/**
+ * @brief Get field target_component from openhd_ground_telemetry message
+ *
+ * @return  component id of the requesting component
+ */
+static inline uint8_t mavlink_msg_openhd_ground_telemetry_get_target_component(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_uint8_t(msg,  25);
+}
+
+/**
  * @brief Decode a openhd_ground_telemetry message into a struct
  *
  * @param msg The message to decode
@@ -330,6 +378,8 @@ static inline void mavlink_msg_openhd_ground_telemetry_decode(const mavlink_mess
     openhd_ground_telemetry->kbitrate = mavlink_msg_openhd_ground_telemetry_get_kbitrate(msg);
     openhd_ground_telemetry->kbitrate_measured = mavlink_msg_openhd_ground_telemetry_get_kbitrate_measured(msg);
     openhd_ground_telemetry->kbitrate_set = mavlink_msg_openhd_ground_telemetry_get_kbitrate_set(msg);
+    openhd_ground_telemetry->target_system = mavlink_msg_openhd_ground_telemetry_get_target_system(msg);
+    openhd_ground_telemetry->target_component = mavlink_msg_openhd_ground_telemetry_get_target_component(msg);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN? msg->len : MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN;
         memset(openhd_ground_telemetry, 0, MAVLINK_MSG_ID_OPENHD_GROUND_TELEMETRY_LEN);

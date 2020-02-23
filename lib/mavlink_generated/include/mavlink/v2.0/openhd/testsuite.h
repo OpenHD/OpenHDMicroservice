@@ -98,7 +98,7 @@ static void mavlink_test_openhd_ground_telemetry(uint8_t system_id, uint8_t comp
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_openhd_ground_telemetry_t packet_in = {
-        963497464,963497672,963497880,963498088,963498296,963498504
+        963497464,963497672,963497880,963498088,963498296,963498504,77,144
     };
     mavlink_openhd_ground_telemetry_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
@@ -108,6 +108,8 @@ static void mavlink_test_openhd_ground_telemetry(uint8_t system_id, uint8_t comp
         packet1.kbitrate = packet_in.kbitrate;
         packet1.kbitrate_measured = packet_in.kbitrate_measured;
         packet1.kbitrate_set = packet_in.kbitrate_set;
+        packet1.target_system = packet_in.target_system;
+        packet1.target_component = packet_in.target_component;
         
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
@@ -122,12 +124,12 @@ static void mavlink_test_openhd_ground_telemetry(uint8_t system_id, uint8_t comp
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_ground_telemetry_pack(system_id, component_id, &msg , packet1.damaged_block_cnt , packet1.lost_packet_cnt , packet1.received_packet_cnt , packet1.kbitrate , packet1.kbitrate_measured , packet1.kbitrate_set );
+    mavlink_msg_openhd_ground_telemetry_pack(system_id, component_id, &msg , packet1.damaged_block_cnt , packet1.lost_packet_cnt , packet1.received_packet_cnt , packet1.kbitrate , packet1.kbitrate_measured , packet1.kbitrate_set , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_ground_telemetry_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_ground_telemetry_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.damaged_block_cnt , packet1.lost_packet_cnt , packet1.received_packet_cnt , packet1.kbitrate , packet1.kbitrate_measured , packet1.kbitrate_set );
+    mavlink_msg_openhd_ground_telemetry_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.damaged_block_cnt , packet1.lost_packet_cnt , packet1.received_packet_cnt , packet1.kbitrate , packet1.kbitrate_measured , packet1.kbitrate_set , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_ground_telemetry_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -140,7 +142,7 @@ static void mavlink_test_openhd_ground_telemetry(uint8_t system_id, uint8_t comp
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_ground_telemetry_send(MAVLINK_COMM_1 , packet1.damaged_block_cnt , packet1.lost_packet_cnt , packet1.received_packet_cnt , packet1.kbitrate , packet1.kbitrate_measured , packet1.kbitrate_set );
+    mavlink_msg_openhd_ground_telemetry_send(MAVLINK_COMM_1 , packet1.damaged_block_cnt , packet1.lost_packet_cnt , packet1.received_packet_cnt , packet1.kbitrate , packet1.kbitrate_measured , packet1.kbitrate_set , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_ground_telemetry_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
@@ -157,7 +159,7 @@ static void mavlink_test_openhd_air_telemetry(uint8_t system_id, uint8_t compone
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_openhd_air_telemetry_t packet_in = {
-        963497464,963497672,963497880,963498088,53
+        963497464,963497672,963497880,963498088,53,120,187
     };
     mavlink_openhd_air_telemetry_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
@@ -166,6 +168,8 @@ static void mavlink_test_openhd_air_telemetry(uint8_t system_id, uint8_t compone
         packet1.skipped_packet_cnt = packet_in.skipped_packet_cnt;
         packet1.injection_fail_cnt = packet_in.injection_fail_cnt;
         packet1.current_signal_dbm = packet_in.current_signal_dbm;
+        packet1.target_system = packet_in.target_system;
+        packet1.target_component = packet_in.target_component;
         
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
@@ -180,12 +184,12 @@ static void mavlink_test_openhd_air_telemetry(uint8_t system_id, uint8_t compone
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_air_telemetry_pack(system_id, component_id, &msg , packet1.damaged_block_cnt , packet1.lost_packet_cnt , packet1.skipped_packet_cnt , packet1.injection_fail_cnt , packet1.current_signal_dbm );
+    mavlink_msg_openhd_air_telemetry_pack(system_id, component_id, &msg , packet1.damaged_block_cnt , packet1.lost_packet_cnt , packet1.skipped_packet_cnt , packet1.injection_fail_cnt , packet1.current_signal_dbm , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_air_telemetry_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_air_telemetry_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.damaged_block_cnt , packet1.lost_packet_cnt , packet1.skipped_packet_cnt , packet1.injection_fail_cnt , packet1.current_signal_dbm );
+    mavlink_msg_openhd_air_telemetry_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.damaged_block_cnt , packet1.lost_packet_cnt , packet1.skipped_packet_cnt , packet1.injection_fail_cnt , packet1.current_signal_dbm , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_air_telemetry_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -198,7 +202,7 @@ static void mavlink_test_openhd_air_telemetry(uint8_t system_id, uint8_t compone
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_air_telemetry_send(MAVLINK_COMM_1 , packet1.damaged_block_cnt , packet1.lost_packet_cnt , packet1.skipped_packet_cnt , packet1.injection_fail_cnt , packet1.current_signal_dbm );
+    mavlink_msg_openhd_air_telemetry_send(MAVLINK_COMM_1 , packet1.damaged_block_cnt , packet1.lost_packet_cnt , packet1.skipped_packet_cnt , packet1.injection_fail_cnt , packet1.current_signal_dbm , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_air_telemetry_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
@@ -215,11 +219,13 @@ static void mavlink_test_openhd_wifi_status(uint8_t system_id, uint8_t component
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_openhd_wifi_status_t packet_in = {
-        { 963497464, 963497465, 963497466, 963497467 },53,{ 120, 121, 122, 123 },{ 132, 133, 134, 135 }
+        { 963497464, 963497465, 963497466, 963497467 },53,{ 120, 121, 122, 123 },{ 132, 133, 134, 135 },144,211
     };
     mavlink_openhd_wifi_status_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.wifi_adapter_cnt = packet_in.wifi_adapter_cnt;
+        packet1.target_system = packet_in.target_system;
+        packet1.target_component = packet_in.target_component;
         
         mav_array_memcpy(packet1.received_packet_cnt, packet_in.received_packet_cnt, sizeof(uint32_t)*4);
         mav_array_memcpy(packet1.current_signal_dbm, packet_in.current_signal_dbm, sizeof(int8_t)*4);
@@ -237,12 +243,12 @@ static void mavlink_test_openhd_wifi_status(uint8_t system_id, uint8_t component
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_wifi_status_pack(system_id, component_id, &msg , packet1.wifi_adapter_cnt , packet1.current_signal_dbm , packet1.wifi_card_type , packet1.received_packet_cnt );
+    mavlink_msg_openhd_wifi_status_pack(system_id, component_id, &msg , packet1.wifi_adapter_cnt , packet1.current_signal_dbm , packet1.wifi_card_type , packet1.received_packet_cnt , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_wifi_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_wifi_status_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.wifi_adapter_cnt , packet1.current_signal_dbm , packet1.wifi_card_type , packet1.received_packet_cnt );
+    mavlink_msg_openhd_wifi_status_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.wifi_adapter_cnt , packet1.current_signal_dbm , packet1.wifi_card_type , packet1.received_packet_cnt , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_wifi_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -255,7 +261,7 @@ static void mavlink_test_openhd_wifi_status(uint8_t system_id, uint8_t component
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_wifi_status_send(MAVLINK_COMM_1 , packet1.wifi_adapter_cnt , packet1.current_signal_dbm , packet1.wifi_card_type , packet1.received_packet_cnt );
+    mavlink_msg_openhd_wifi_status_send(MAVLINK_COMM_1 , packet1.wifi_adapter_cnt , packet1.current_signal_dbm , packet1.wifi_card_type , packet1.received_packet_cnt , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_wifi_status_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
@@ -272,12 +278,14 @@ static void mavlink_test_openhd_air_load(uint8_t system_id, uint8_t component_id
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_openhd_air_load_t packet_in = {
-        5,72
+        5,72,139,206
     };
     mavlink_openhd_air_load_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.cpuload = packet_in.cpuload;
         packet1.temp = packet_in.temp;
+        packet1.target_system = packet_in.target_system;
+        packet1.target_component = packet_in.target_component;
         
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
@@ -292,12 +300,12 @@ static void mavlink_test_openhd_air_load(uint8_t system_id, uint8_t component_id
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_air_load_pack(system_id, component_id, &msg , packet1.cpuload , packet1.temp );
+    mavlink_msg_openhd_air_load_pack(system_id, component_id, &msg , packet1.cpuload , packet1.temp , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_air_load_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_air_load_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.cpuload , packet1.temp );
+    mavlink_msg_openhd_air_load_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.cpuload , packet1.temp , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_air_load_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -310,7 +318,7 @@ static void mavlink_test_openhd_air_load(uint8_t system_id, uint8_t component_id
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_air_load_send(MAVLINK_COMM_1 , packet1.cpuload , packet1.temp );
+    mavlink_msg_openhd_air_load_send(MAVLINK_COMM_1 , packet1.cpuload , packet1.temp , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_air_load_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
@@ -327,12 +335,14 @@ static void mavlink_test_openhd_ground_load(uint8_t system_id, uint8_t component
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_openhd_ground_load_t packet_in = {
-        5,72
+        5,72,139,206
     };
     mavlink_openhd_ground_load_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.cpuload = packet_in.cpuload;
         packet1.temp = packet_in.temp;
+        packet1.target_system = packet_in.target_system;
+        packet1.target_component = packet_in.target_component;
         
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
@@ -347,12 +357,12 @@ static void mavlink_test_openhd_ground_load(uint8_t system_id, uint8_t component
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_ground_load_pack(system_id, component_id, &msg , packet1.cpuload , packet1.temp );
+    mavlink_msg_openhd_ground_load_pack(system_id, component_id, &msg , packet1.cpuload , packet1.temp , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_ground_load_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_ground_load_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.cpuload , packet1.temp );
+    mavlink_msg_openhd_ground_load_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.cpuload , packet1.temp , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_ground_load_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -365,7 +375,7 @@ static void mavlink_test_openhd_ground_load(uint8_t system_id, uint8_t component
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_ground_load_send(MAVLINK_COMM_1 , packet1.cpuload , packet1.temp );
+    mavlink_msg_openhd_ground_load_send(MAVLINK_COMM_1 , packet1.cpuload , packet1.temp , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_ground_load_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
@@ -382,7 +392,7 @@ static void mavlink_test_openhd_ground_power(uint8_t system_id, uint8_t componen
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_openhd_ground_power_t packet_in = {
-        17.0,45.0,73.0,101.0,53
+        17.0,45.0,73.0,101.0,53,120,187
     };
     mavlink_openhd_ground_power_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
@@ -391,6 +401,8 @@ static void mavlink_test_openhd_ground_power(uint8_t system_id, uint8_t componen
         packet1.vbat = packet_in.vbat;
         packet1.iout = packet_in.iout;
         packet1.type = packet_in.type;
+        packet1.target_system = packet_in.target_system;
+        packet1.target_component = packet_in.target_component;
         
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
@@ -405,12 +417,12 @@ static void mavlink_test_openhd_ground_power(uint8_t system_id, uint8_t componen
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_ground_power_pack(system_id, component_id, &msg , packet1.vin , packet1.vout , packet1.vbat , packet1.iout , packet1.type );
+    mavlink_msg_openhd_ground_power_pack(system_id, component_id, &msg , packet1.vin , packet1.vout , packet1.vbat , packet1.iout , packet1.type , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_ground_power_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_ground_power_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.vin , packet1.vout , packet1.vbat , packet1.iout , packet1.type );
+    mavlink_msg_openhd_ground_power_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.vin , packet1.vout , packet1.vbat , packet1.iout , packet1.type , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_ground_power_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -423,7 +435,7 @@ static void mavlink_test_openhd_ground_power(uint8_t system_id, uint8_t componen
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_ground_power_send(MAVLINK_COMM_1 , packet1.vin , packet1.vout , packet1.vbat , packet1.iout , packet1.type );
+    mavlink_msg_openhd_ground_power_send(MAVLINK_COMM_1 , packet1.vin , packet1.vout , packet1.vbat , packet1.iout , packet1.type , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_ground_power_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
@@ -440,11 +452,13 @@ static void mavlink_test_openhd_gpio_state(uint8_t system_id, uint8_t component_
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_openhd_gpio_state_t packet_in = {
-        5
+        5,72,139
     };
     mavlink_openhd_gpio_state_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.pins = packet_in.pins;
+        packet1.target_system = packet_in.target_system;
+        packet1.target_component = packet_in.target_component;
         
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
@@ -459,12 +473,12 @@ static void mavlink_test_openhd_gpio_state(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_gpio_state_pack(system_id, component_id, &msg , packet1.pins );
+    mavlink_msg_openhd_gpio_state_pack(system_id, component_id, &msg , packet1.pins , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_gpio_state_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_gpio_state_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.pins );
+    mavlink_msg_openhd_gpio_state_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.pins , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_gpio_state_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -477,7 +491,7 @@ static void mavlink_test_openhd_gpio_state(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_openhd_gpio_state_send(MAVLINK_COMM_1 , packet1.pins );
+    mavlink_msg_openhd_gpio_state_send(MAVLINK_COMM_1 , packet1.pins , packet1.target_system , packet1.target_component );
     mavlink_msg_openhd_gpio_state_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
