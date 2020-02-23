@@ -75,7 +75,7 @@ void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code
     }
 
     mavlink_message_t outgoing_msg;
-    mavlink_msg_openhd_ground_power_pack(this->m_sysid, this->m_compid, &outgoing_msg, (float)vin / 1000.0, (float)vout / 1000.0, (float)vbat / 1000.0, (float)iout / 1000.0, bat_type, 0, 0);
+    mavlink_msg_openhd_ground_power_pack(this->m_sysid, this->m_compid, &outgoing_msg, 0, 0, (float)vin / 1000.0, (float)vout / 1000.0, (float)vbat / 1000.0, (float)iout / 1000.0, bat_type);
     len = mavlink_msg_to_send_buffer(raw, &outgoing_msg);
 
     boost::system::error_code err;

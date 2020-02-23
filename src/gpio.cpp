@@ -84,9 +84,9 @@ void GPIOMicroservice::send_openhd_gpio_state(const boost::system::error_code& e
     mavlink_msg_openhd_gpio_state_pack(this->m_sysid,
                                        this->m_compid, 
                                        &outgoing_msg,
-                                       pins,
                                        0, 
-                                       0);
+                                       0,
+                                       pins);
     len = mavlink_msg_to_send_buffer(raw, &outgoing_msg);
 
     boost::system::error_code err;

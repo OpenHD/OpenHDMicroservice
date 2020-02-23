@@ -78,11 +78,11 @@ void CameraMicroservice::process_mavlink_message(mavlink_message_t msg) {
                     mavlink_msg_openhd_camera_settings_pack(this->m_sysid, // mark the message as being from the local system ID
                                                             this->m_compid,  // and from this component
                                                             &outgoing_msg,
+                                                            msg.sysid,
+                                                            msg.compid,
                                                             brightness,
                                                             contrast,
-                                                            saturation,
-                                                            msg.sysid,
-                                                            msg.compid);
+                                                            saturation);
                     len = mavlink_msg_to_send_buffer(raw, &outgoing_msg);
 
                     this->m_socket.send(boost::asio::buffer(raw, len), 0, err);
