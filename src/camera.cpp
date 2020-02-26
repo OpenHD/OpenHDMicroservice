@@ -70,9 +70,11 @@ void CameraMicroservice::process_mavlink_message(mavlink_message_t msg) {
                                                  msg.sysid,   // address the ack to the senders system ID...
                                                  msg.compid); // ... and the senders component ID
                     len = mavlink_msg_to_send_buffer(raw, &ack);
-                    
-                    boost::system::error_code err;
-                    this->m_socket.send(boost::asio::buffer(raw, len), 0, err);
+
+                    this->m_socket->async_send(boost::asio::buffer(raw, len),
+                                               boost::bind(&Microservice::handle_write,
+                                                           this,
+                                                           boost::asio::placeholders::error));
 
                     // ... then reply
                     mavlink_message_t outgoing_msg;
@@ -86,7 +88,11 @@ void CameraMicroservice::process_mavlink_message(mavlink_message_t msg) {
                                                             saturation);
                     len = mavlink_msg_to_send_buffer(raw, &outgoing_msg);
 
-                    this->m_socket.send(boost::asio::buffer(raw, len), 0, err);
+                    this->m_socket->async_send(boost::asio::buffer(raw, len),
+                                               boost::bind(&Microservice::handle_write,
+                                                           this,
+                                                           boost::asio::placeholders::error));
+
                     break;
                 }
                 case OPENHD_CMD_SET_CAMERA_SETTINGS: {
@@ -115,9 +121,11 @@ void CameraMicroservice::process_mavlink_message(mavlink_message_t msg) {
                                                  msg.sysid, // send ack to the senders system ID...
                                                  msg.compid); // ... and the senders component ID
                     len = mavlink_msg_to_send_buffer(raw, &ack);
-                    
-                    boost::system::error_code err;
-                    this->m_socket.send(boost::asio::buffer(raw, len), 0, err);
+
+                    this->m_socket->async_send(boost::asio::buffer(raw, len),
+                                               boost::bind(&Microservice::handle_write,
+                                                           this,
+                                                           boost::asio::placeholders::error));
 
                     break;
                 }

@@ -90,8 +90,10 @@ void GPIOMicroservice::send_openhd_gpio_state(const boost::system::error_code& e
                                        pins);
     len = mavlink_msg_to_send_buffer(raw, &outgoing_msg);
 
-    boost::system::error_code err;
-    this->m_socket.send(boost::asio::buffer(raw, len), 0, err);
+    this->m_socket->async_send(boost::asio::buffer(raw, len),
+                               boost::bind(&Microservice::handle_write,
+                                           this,
+                                           boost::asio::placeholders::error));
 
     this->m_status_timer.expires_at(this->m_status_timer.expires_at() + this->m_status_interval);
     this->m_status_timer.async_wait(boost::bind(&GPIOMicroservice::send_openhd_gpio_state, 
@@ -166,9 +168,10 @@ void GPIOMicroservice::process_mavlink_message(mavlink_message_t msg) {
                                                  msg.compid); // ... and the senders component ID
                     len = mavlink_msg_to_send_buffer(raw, &ack);
                     
-                    boost::system::error_code err;
-                    this->m_socket.send(boost::asio::buffer(raw, len), 0, err);
-
+                    this->m_socket->async_send(boost::asio::buffer(raw, len),
+                                               boost::bind(&Microservice::handle_write,
+                                                           this,
+                                                           boost::asio::placeholders::error));
                     break;
                 }
                 default: {

@@ -83,12 +83,6 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    try {
-        service->start_receive();
-    } catch (std::exception &exception) {
-        std::cout << "Start receive failed" << std::endl;
-        exit(1);
-    }
     io_service.run();
     return 0;
 }

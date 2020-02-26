@@ -77,8 +77,10 @@ void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code
     mavlink_msg_openhd_ground_power_pack(this->m_sysid, this->m_compid, &outgoing_msg, 0, 0, (float)vin / 1000.0, (float)vout / 1000.0, (float)vbat / 1000.0, (float)iout / 1000.0, bat_type);
     len = mavlink_msg_to_send_buffer(raw, &outgoing_msg);
 
-    boost::system::error_code err;
-    this->m_socket.send(boost::asio::buffer(raw, len), 0, err);
+    this->m_socket->async_send(boost::asio::buffer(raw, len),
+                               boost::bind(&Microservice::handle_write,
+                                           this,
+                                           boost::asio::placeholders::error));
 
     this->m_status_timer.expires_at(this->m_status_timer.expires_at() + this->m_status_interval);
     this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
@@ -130,8 +132,11 @@ void PowerMicroservice::process_mavlink_message(mavlink_message_t msg) {
                                                  msg.compid); // ... and the senders component ID
                     len = mavlink_msg_to_send_buffer(raw, &ack);
                     
-                    boost::system::error_code err;
-                    this->m_socket.send(boost::asio::buffer(raw, len), 0, err);
+                    this->m_socket->async_send(boost::asio::buffer(raw, len),
+                                               boost::bind(&Microservice::handle_write,
+                                                           this,
+                                                           boost::asio::placeholders::error));
+
                     sync();
                     sleep(3);
                     reboot(RB_AUTOBOOT);
@@ -155,8 +160,11 @@ void PowerMicroservice::process_mavlink_message(mavlink_message_t msg) {
                                                  msg.compid); // ... and the senders component ID
                     len = mavlink_msg_to_send_buffer(raw, &ack);
                     
-                    boost::system::error_code err;
-                    this->m_socket.send(boost::asio::buffer(raw, len), 0, err);
+                    this->m_socket->async_send(boost::asio::buffer(raw, len),
+                                               boost::bind(&Microservice::handle_write,
+                                                           this,
+                                                           boost::asio::placeholders::error));
+
                     sync();
                     sleep(3);
                     reboot(RB_POWER_OFF);

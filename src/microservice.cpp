@@ -19,7 +19,12 @@ using namespace boost::asio;
 
 
 
-Microservice::Microservice(boost::asio::io_service &io_service): m_socket(io_service), m_heartbeat_interval(5), m_heartbeat_timer(io_service, m_heartbeat_interval) {}
+Microservice::Microservice(boost::asio::io_service &io_service): m_io_service(io_service),
+                                                                 m_socket(new boost::asio::ip::tcp::socket(io_service)), 
+                                                                 m_heartbeat_interval(5), 
+                                                                 m_heartbeat_timer(io_service, m_heartbeat_interval), 
+                                                                 m_reconnect_interval(1), 
+                                                                 m_reconnect_timer(io_service, m_reconnect_interval) {}
 
 void Microservice::set_sysid(uint8_t sysid) {
     this->m_sysid = sysid;
@@ -29,11 +34,34 @@ void Microservice::set_compid(uint8_t compid) {
     this->m_compid = compid;
 }
 
+void Microservice::reconnect(const boost::system::error_code& error) {
+    connect();
+    
+    m_reconnect_timer.expires_at(m_reconnect_timer.expires_at() + m_reconnect_interval);
+    m_reconnect_timer.async_wait(boost::bind(&Microservice::reconnect, 
+                                       this, 
+                                       boost::asio::placeholders::error));
+}
 
 void Microservice::connect() {
+    if (m_connected) {
+        return;
+    }
 
-    this->m_socket.open(ip::tcp::v4());
-    this->m_socket.connect(ip::tcp::endpoint(boost::asio::ip::address::from_string(ROUTER_ADDRESS), ROUTER_PORT));
+    m_socket.reset(new boost::asio::ip::tcp::socket(m_io_service));
+
+    boost::system::error_code error;
+
+    m_socket->open(ip::tcp::v4());
+    m_socket->connect(ip::tcp::endpoint(boost::asio::ip::address::from_string(ROUTER_ADDRESS), ROUTER_PORT), error);
+
+    if (error) {
+        std::cerr << "Connection failed: " << error.message() << std::endl;
+        m_socket->close();
+    } else {
+        m_connected = true;
+        start_receive();
+    }
 }
 
 void Microservice::setup() {
@@ -41,10 +69,14 @@ void Microservice::setup() {
     this->m_heartbeat_timer.async_wait(boost::bind(&Microservice::send_heartbeat, 
                                        this, 
                                        boost::asio::placeholders::error));
+
+    this->m_reconnect_timer.async_wait(boost::bind(&Microservice::reconnect, 
+                                       this, 
+                                       boost::asio::placeholders::error));
 }
 
 void Microservice::start_receive() {
-    this->m_socket.async_receive(boost::asio::buffer(this->m_recv_buf, sizeof(this->m_recv_buf)), 
+    this->m_socket->async_receive(boost::asio::buffer(this->m_recv_buf, sizeof(this->m_recv_buf)), 
                                  boost::bind(&Microservice::handle_receive, 
                                              this,
                                              boost::asio::placeholders::error,
@@ -60,8 +92,11 @@ void Microservice::send_heartbeat(const boost::system::error_code& error) {
     mavlink_msg_heartbeat_pack(this->m_sysid, this->m_compid, &outgoing_msg, MAV_TYPE_GENERIC, MAV_AUTOPILOT_INVALID, 0, 0, 0);
     len = mavlink_msg_to_send_buffer(raw, &outgoing_msg);
 
-    boost::system::error_code err;
-    this->m_socket.send(buffer(raw, len), 0, err);
+
+    this->m_socket->async_send(boost::asio::buffer(raw, len),
+                                boost::bind(&Microservice::handle_write,
+                                            this,
+                                            boost::asio::placeholders::error));
 
     m_heartbeat_timer.expires_at(m_heartbeat_timer.expires_at() + m_heartbeat_interval);
     this->m_heartbeat_timer.async_wait(boost::bind(&Microservice::send_heartbeat, 
@@ -69,11 +104,15 @@ void Microservice::send_heartbeat(const boost::system::error_code& error) {
                                                    boost::asio::placeholders::error));
 }
 
+void Microservice::handle_write(const boost::system::error_code &error) {
+    if (error) {
+        m_connected = false;
+    } 
+}
 
 void Microservice::handle_receive(const boost::system::error_code& error, std::size_t recvlen) {
-
-    if (error != boost::system::errc::success) {
-        start_receive();
+    if (error) {
+        m_connected = false;
         return;
     } 
     

@@ -15,6 +15,7 @@ public:
     virtual ~Microservice() {}
 
     void connect();
+    void reconnect(const boost::system::error_code& error);
     void start_receive();    
     void send_heartbeat(const boost::system::error_code& error);
     void set_sysid(uint8_t sysid);
@@ -22,6 +23,7 @@ public:
 
     virtual void setup();
     void handle_receive(const boost::system::error_code& error, std::size_t recvlen);
+    void handle_write(const boost::system::error_code &error);
     virtual void process_mavlink_message(mavlink_message_t msg) = 0;
 
 protected:
@@ -29,7 +31,11 @@ protected:
     uint8_t m_compid;
     char m_recv_buf[1024];
 
-    boost::asio::ip::tcp::socket m_socket;
+    bool m_connected = false;
+
+    boost::asio::io_service &m_io_service;
+
+    std::shared_ptr<boost::asio::ip::tcp::socket> m_socket;
 
     mavlink_status_t m_mavlink_status;
 
@@ -37,6 +43,8 @@ private:
     boost::posix_time::seconds m_heartbeat_interval;
     boost::asio::deadline_timer m_heartbeat_timer;
 
+    boost::posix_time::seconds m_reconnect_interval;
+    boost::asio::deadline_timer m_reconnect_timer;
 };
 
 #endif
