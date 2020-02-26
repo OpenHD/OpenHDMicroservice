@@ -15,19 +15,19 @@ openhd_microservice: bcm2835.o ina2xx.o microservice.o gpio.o camera.o power.o m
 	g++ -g -pthread -o openhd_microservice bcm2835.o ina2xx.o microservice.o gpio.o camera.o power.o main.o $(LDFLAGS)
 
 main.o: $(SRC_DIR)/main.cpp
-	g++ -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(INC_DIR) $(SRC_DIR)/main.cpp
+	g++ -std=c++11 -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(INC_DIR) $(SRC_DIR)/main.cpp
 
 microservice.o: $(SRC_DIR)/microservice.cpp
-	g++ -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(INC_DIR) $(SRC_DIR)/microservice.cpp
+	g++ -std=c++11 -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(INC_DIR) $(SRC_DIR)/microservice.cpp
 
 camera.o: $(SRC_DIR)/camera.cpp
-	g++ -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(INC_DIR) $(SRC_DIR)/camera.cpp
+	g++ -std=c++11 -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(INC_DIR) $(SRC_DIR)/camera.cpp
 
 power.o: $(SRC_DIR)/power.cpp
-	g++ -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(INC_DIR) $(SRC_DIR)/power.cpp
+	g++ -std=c++11 -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(INC_DIR) $(SRC_DIR)/power.cpp
 
 gpio.o: $(SRC_DIR)/gpio.cpp
-	g++ -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(INC_DIR) $(SRC_DIR)/gpio.cpp
+	g++ -std=c++11 -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(INC_DIR) $(SRC_DIR)/gpio.cpp
 
 ina2xx.o: $(SRC_DIR)/ina2xx.c
 	gcc -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(INC_DIR) $(SRC_DIR)/ina2xx.c
