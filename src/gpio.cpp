@@ -18,7 +18,8 @@ extern "C" {
     #include <bcm2835.h>
 }
 
-#define SERVICE_COMPID MAV_COMP_ID_USER2
+constexpr uint8_t SERVICE_COMPID = MAV_COMP_ID_USER2;
+
 
 #define GPIO5 5
 #define GPIO6 6

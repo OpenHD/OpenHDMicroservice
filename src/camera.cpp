@@ -15,7 +15,8 @@
 #include "camera.h"
 #include "constants.h"
 
-#define SERVICE_COMPID MAV_COMP_ID_CAMERA
+
+constexpr uint8_t SERVICE_COMPID = MAV_COMP_ID_CAMERA;
 
 
 CameraMicroservice::CameraMicroservice(boost::asio::io_service &io_service): Microservice(io_service) {
