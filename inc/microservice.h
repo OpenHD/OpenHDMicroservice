@@ -17,16 +17,16 @@ public:
     void connect();
     void start_receive();    
     void send_heartbeat(const boost::system::error_code& error);
-    void set_sysid(int8_t sysid);
-    void set_compid(int8_t compid);
+    void set_sysid(uint8_t sysid);
+    void set_compid(uint8_t compid);
 
     virtual void setup();
     void handle_receive(const boost::system::error_code& error, std::size_t recvlen);
     virtual void process_mavlink_message(mavlink_message_t msg) = 0;
 
 protected:
-    int8_t m_sysid;
-    int8_t m_compid;
+    uint8_t m_sysid;
+    uint8_t m_compid;
     char m_recv_buf[1024];
 
     boost::asio::ip::tcp::socket m_socket;

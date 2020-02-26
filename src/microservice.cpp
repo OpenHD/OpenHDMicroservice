@@ -21,11 +21,11 @@ using namespace boost::asio;
 
 Microservice::Microservice(boost::asio::io_service &io_service): m_socket(io_service), m_heartbeat_interval(5), m_heartbeat_timer(io_service, m_heartbeat_interval) {}
 
-void Microservice::set_sysid(int8_t sysid) {
+void Microservice::set_sysid(uint8_t sysid) {
     this->m_sysid = sysid;
 }
 
-void Microservice::set_compid(int8_t compid) {
+void Microservice::set_compid(uint8_t compid) {
     this->m_compid = compid;
 }
 
