@@ -52,10 +52,6 @@ void GPIOMicroservice::setup() {
     bcm2835_gpio_fsel(GPIO19, BCM2835_GPIO_FSEL_OUTP);
     bcm2835_gpio_fsel(GPIO26, BCM2835_GPIO_FSEL_OUTP);
     bcm2835_gpio_fsel(GPIO32, BCM2835_GPIO_FSEL_OUTP);
-
-    this->m_status_timer.async_wait(boost::bind(&GPIOMicroservice::send_openhd_gpio_state, 
-                                                this, 
-                                                boost::asio::placeholders::error));
 }
 
 
