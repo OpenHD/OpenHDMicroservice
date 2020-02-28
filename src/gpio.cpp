@@ -55,7 +55,7 @@ void GPIOMicroservice::setup() {
 }
 
 
-void GPIOMicroservice::send_openhd_gpio_state(const boost::system::error_code& error) {
+void GPIOMicroservice::send_openhd_gpio_state() {
     std::cout << "GPIOMicroservice::send_openhd_gpio_state" << std::endl;
     uint8_t raw[MAVLINK_MAX_PACKET_LEN];
     int len = 0;
