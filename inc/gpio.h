@@ -19,13 +19,6 @@ public:
     virtual void process_mavlink_message(mavlink_message_t msg);
 
     void send_openhd_gpio_state();
-
-    
-
-private:
-    boost::posix_time::seconds m_status_interval;
-    boost::asio::deadline_timer m_status_timer;
-
 };
 
 #endif

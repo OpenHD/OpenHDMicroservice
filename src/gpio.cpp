@@ -31,9 +31,8 @@ constexpr uint8_t SERVICE_COMPID = MAV_COMP_ID_USER2;
 #define GPIO32 32
 
 
-GPIOMicroservice::GPIOMicroservice(boost::asio::io_service &io_service): Microservice(io_service), m_status_interval(5), m_status_timer(io_service, m_status_interval) {
+GPIOMicroservice::GPIOMicroservice(boost::asio::io_service &io_service): Microservice(io_service) {
     set_compid(SERVICE_COMPID);
-    m_status_interval = boost::posix_time::seconds(5);
 }
 
 
@@ -90,11 +89,6 @@ void GPIOMicroservice::send_openhd_gpio_state() {
                                boost::bind(&Microservice::handle_write,
                                            this,
                                            boost::asio::placeholders::error));
-
-    this->m_status_timer.expires_at(this->m_status_timer.expires_at() + this->m_status_interval);
-    this->m_status_timer.async_wait(boost::bind(&GPIOMicroservice::send_openhd_gpio_state, 
-                                                this, 
-                                                boost::asio::placeholders::error));
 }
 
 
