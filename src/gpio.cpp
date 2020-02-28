@@ -170,6 +170,32 @@ void GPIOMicroservice::process_mavlink_message(mavlink_message_t msg) {
                                                            boost::asio::placeholders::error));
                     break;
                 }
+                case OPENHD_CMD_GET_GPIOS: {
+                    std::cout << "OPENHD_CMD_GET_GPIOS" << std::endl;
+
+                    uint8_t raw[MAVLINK_MAX_PACKET_LEN];
+                    int len = 0;
+
+                    // acknowledge the command, then reply
+                    mavlink_message_t ack;
+                    mavlink_msg_command_ack_pack(this->m_sysid, // mark the message as being from the local system ID
+                                                 this->m_compid,  // and from this component
+                                                 &ack,
+                                                 OPENHD_CMD_GET_GPIOS, // the command we're ack'ing
+                                                 MAV_CMD_ACK_OK,
+                                                 0,
+                                                 0,
+                                                 msg.sysid, // send ack to the senders system ID...
+                                                 msg.compid); // ... and the senders component ID
+                    len = mavlink_msg_to_send_buffer(raw, &ack);
+                    
+                    this->m_socket->async_send(boost::asio::buffer(raw, len),
+                                               boost::bind(&Microservice::handle_write,
+                                                           this,
+                                                           boost::asio::placeholders::error));
+                    send_openhd_gpio_state();
+                    break;
+                }
                 default: {
                     break;
                 }
