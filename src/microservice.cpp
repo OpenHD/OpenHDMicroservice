@@ -21,8 +21,11 @@ using namespace boost::asio;
 
 Microservice::Microservice(boost::asio::io_service &io_service): m_io_service(io_service),
                                                                  m_socket(new boost::asio::ip::tcp::socket(io_service)), 
+                                                                 m_boot_time(boost::posix_time::microsec_clock::local_time().time_of_day().total_milliseconds()),
                                                                  m_heartbeat_interval(5), 
                                                                  m_heartbeat_timer(io_service, m_heartbeat_interval), 
+                                                                 m_sys_time_interval(1), 
+                                                                 m_sys_time_timer(io_service, m_sys_time_interval),
                                                                  m_reconnect_interval(1), 
                                                                  m_reconnect_timer(io_service, m_reconnect_interval) {}
 
@@ -100,6 +103,29 @@ void Microservice::send_heartbeat(const boost::system::error_code& error) {
 
     m_heartbeat_timer.expires_at(m_heartbeat_timer.expires_at() + m_heartbeat_interval);
     this->m_heartbeat_timer.async_wait(boost::bind(&Microservice::send_heartbeat, 
+                                                   this, 
+                                                   boost::asio::placeholders::error));
+}
+
+void Microservice::send_system_time(const boost::system::error_code& error) {
+    std::cout << "Microservice::send_system_time" << std::endl;
+    uint8_t raw[MAVLINK_MAX_PACKET_LEN];
+    int len = 0;
+
+    auto now = boost::posix_time::microsec_clock::local_time().time_of_day().total_milliseconds();
+
+    mavlink_message_t outgoing_msg;
+    mavlink_msg_system_time_pack(this->m_sysid, this->m_compid, &outgoing_msg, now, m_boot_time);
+    len = mavlink_msg_to_send_buffer(raw, &outgoing_msg);
+
+
+    this->m_socket->async_send(boost::asio::buffer(raw, len),
+                                boost::bind(&Microservice::handle_write,
+                                            this,
+                                            boost::asio::placeholders::error));
+
+    m_sys_time_timer.expires_at(m_sys_time_timer.expires_at() + m_sys_time_interval);
+    this->m_sys_time_timer.async_wait(boost::bind(&Microservice::send_system_time, 
                                                    this, 
                                                    boost::asio::placeholders::error));
 }

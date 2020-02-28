@@ -18,6 +18,7 @@ public:
     void reconnect(const boost::system::error_code& error);
     void start_receive();    
     void send_heartbeat(const boost::system::error_code& error);
+    void send_system_time(const boost::system::error_code& error);
     void set_sysid(uint8_t sysid);
     void set_compid(uint8_t compid);
 
@@ -40,8 +41,13 @@ protected:
     mavlink_status_t m_mavlink_status;
 
 private:
+    long m_boot_time = 0;
+
     boost::posix_time::seconds m_heartbeat_interval;
     boost::asio::deadline_timer m_heartbeat_timer;
+
+    boost::posix_time::seconds m_sys_time_interval;
+    boost::asio::deadline_timer m_sys_time_timer;
 
     boost::posix_time::seconds m_reconnect_interval;
     boost::asio::deadline_timer m_reconnect_timer;
