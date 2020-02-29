@@ -76,6 +76,10 @@ void Microservice::setup() {
     this->m_reconnect_timer.async_wait(boost::bind(&Microservice::reconnect, 
                                        this, 
                                        boost::asio::placeholders::error));
+
+    this->m_sys_time_timer.async_wait(boost::bind(&Microservice::send_system_time, 
+                                                  this, 
+                                                  boost::asio::placeholders::error));
 }
 
 void Microservice::start_receive() {
