@@ -122,14 +122,14 @@ void GPIOMicroservice::process_mavlink_message(mavlink_message_t msg) {
 
                     auto pin = (uint8_t)command.param1;
                 
-                    auto gpio5  = pin & 1 << 0;
-                    auto gpio6  = pin & 1 << 1;
-                    auto gpio12 = pin & 1 << 2;
-                    auto gpio13 = pin & 1 << 3;
-                    auto gpio16 = pin & 1 << 4;
-                    auto gpio19 = pin & 1 << 5;
-                    auto gpio26 = pin & 1 << 6;
-                    auto gpio32 = pin & 1 << 7;
+                    auto gpio5  = pin >> 0 & 1;
+                    auto gpio6  = pin >> 1 & 1;
+                    auto gpio12 = pin >> 2 & 1;
+                    auto gpio13 = pin >> 3 & 1;
+                    auto gpio16 = pin >> 4 & 1;
+                    auto gpio19 = pin >> 5 & 1;
+                    auto gpio26 = pin >> 6 & 1;
+                    auto gpio32 = pin >> 7 & 1;
 
 
                     bcm2835_gpio_write(GPIO5,  gpio5);
