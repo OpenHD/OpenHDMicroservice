@@ -116,7 +116,7 @@ void Microservice::send_system_time(const boost::system::error_code& error) {
     uint8_t raw[MAVLINK_MAX_PACKET_LEN];
     int len = 0;
 
-    auto now = boost::posix_time::microsec_clock::local_time().time_of_day().total_milliseconds();
+    auto now = boost::posix_time::microsec_clock::local_time().time_of_day().total_microseconds();
 
     mavlink_message_t outgoing_msg;
     mavlink_msg_system_time_pack(this->m_sysid, this->m_compid, &outgoing_msg, now, m_boot_time);
