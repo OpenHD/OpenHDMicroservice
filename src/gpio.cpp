@@ -162,6 +162,10 @@ void GPIOMicroservice::process_mavlink_message(mavlink_message_t msg) {
                                                boost::bind(&Microservice::handle_write,
                                                            this,
                                                            boost::asio::placeholders::error));
+
+                    // Send the new GPIO state to all connected devices to ensure the state is kept in sync everywhere
+                    send_openhd_gpio_state();
+
                     break;
                 }
                 case OPENHD_CMD_GET_GPIOS: {
