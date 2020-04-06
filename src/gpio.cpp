@@ -67,14 +67,14 @@ void GPIOMicroservice::send_openhd_gpio_state() {
 
     uint8_t pins = 0;
 
-    pins |= bcm2835_gpio_lev(GPIO5)  & 1 << 0;
-    pins |= bcm2835_gpio_lev(GPIO6)  & 1 << 1;
-    pins |= bcm2835_gpio_lev(GPIO12) & 1 << 2;
-    pins |= bcm2835_gpio_lev(GPIO13) & 1 << 3;
-    pins |= bcm2835_gpio_lev(GPIO16) & 1 << 4;
-    pins |= bcm2835_gpio_lev(GPIO19) & 1 << 5;
-    pins |= bcm2835_gpio_lev(GPIO26) & 1 << 6;
-    pins |= bcm2835_gpio_lev(GPIO32) & 1 << 7;
+    pins |= (bcm2835_gpio_lev(GPIO5)  & 1) << 0;
+    pins |= (bcm2835_gpio_lev(GPIO6)  & 1) << 1;
+    pins |= (bcm2835_gpio_lev(GPIO12) & 1) << 2;
+    pins |= (bcm2835_gpio_lev(GPIO13) & 1) << 3;
+    pins |= (bcm2835_gpio_lev(GPIO16) & 1) << 4;
+    pins |= (bcm2835_gpio_lev(GPIO19) & 1) << 5;
+    pins |= (bcm2835_gpio_lev(GPIO26) & 1) << 6;
+    pins |= (bcm2835_gpio_lev(GPIO32) & 1) << 7;
 
     mavlink_message_t outgoing_msg;
     mavlink_msg_openhd_gpio_state_pack(this->m_sysid,
