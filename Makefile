@@ -11,8 +11,8 @@ SYSTEM_INCLUDE = $(PREFIX)/include
 LDFLAGS = -L$(PREFIX)/lib -llifepo4wered -lboost_system -lboost_program_options
 
 
-openhd_microservice: bcm2835.o ina2xx.o microservice.o gpio.o camera.o power.o main.o 
-	g++ -g -pthread -o openhd_microservice bcm2835.o ina2xx.o microservice.o gpio.o camera.o power.o main.o $(LDFLAGS)
+openhd_microservice: bcm2835.o ina2xx.o microservice.o gpio.o camera.o power.o status.o main.o 
+	g++ -g -pthread -o openhd_microservice bcm2835.o ina2xx.o microservice.o gpio.o camera.o power.o status.o main.o $(LDFLAGS)
 
 main.o: $(SRC_DIR)/main.cpp
 	g++ -std=c++11 -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(INC_DIR) $(SRC_DIR)/main.cpp
@@ -28,6 +28,9 @@ power.o: $(SRC_DIR)/power.cpp
 
 gpio.o: $(SRC_DIR)/gpio.cpp
 	g++ -std=c++11 -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(INC_DIR) $(SRC_DIR)/gpio.cpp
+
+status.o: $(SRC_DIR)/status.cpp
+	g++ -std=c++11 -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(INC_DIR) $(SRC_DIR)/status.cpp
 
 ina2xx.o: $(SRC_DIR)/ina2xx.c
 	gcc -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(INC_DIR) $(SRC_DIR)/ina2xx.c
