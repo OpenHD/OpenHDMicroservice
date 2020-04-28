@@ -24,7 +24,7 @@ Microservice::Microservice(boost::asio::io_service &io_service): m_io_service(io
                                                                  m_boot_time(boost::posix_time::microsec_clock::local_time().time_of_day().total_milliseconds()),
                                                                  m_heartbeat_interval(5), 
                                                                  m_heartbeat_timer(io_service, m_heartbeat_interval), 
-                                                                 m_sys_time_interval(1), 
+                                                                 m_sys_time_interval(5), 
                                                                  m_sys_time_timer(io_service, m_sys_time_interval),
                                                                  m_reconnect_interval(1), 
                                                                  m_reconnect_timer(io_service, m_reconnect_interval) {}
