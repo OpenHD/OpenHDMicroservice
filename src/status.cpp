@@ -5,6 +5,8 @@
 #include <sys/reboot.h>
 
 #include <iostream>
+#include <fstream>
+#include <streambuf>
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
@@ -182,6 +184,50 @@ void StatusMicroservice::process_mavlink_message(mavlink_message_t msg) {
                                                             this,
                                                             boost::asio::placeholders::error));
                     }
+                    break;
+                }
+                case OPENHD_CMD_GET_VERSION: {
+                    std::cout << "OPENHD_CMD_GET_VERSION" << std::endl;
+                    uint8_t raw[MAVLINK_MAX_PACKET_LEN];
+                    int len = 0;
+
+                    // acknowledge the command, then reply
+                    mavlink_message_t ack;
+                    mavlink_msg_command_ack_pack(this->m_sysid, // mark the message as being from the local system ID
+                                                 this->m_compid,  // and from this component
+                                                 &ack,
+                                                 OPENHD_CMD_GET_VERSION, // the command we're ack'ing
+                                                 MAV_CMD_ACK_OK,
+                                                 0,
+                                                 0,
+                                                 msg.sysid, // send ack to the senders system ID...
+                                                 msg.compid); // ... and the senders component ID
+                    len = mavlink_msg_to_send_buffer(raw, &ack);
+                    
+                    this->m_socket->async_send(boost::asio::buffer(raw, len),
+                                               boost::bind(&Microservice::handle_write,
+                                                           this,
+                                                           boost::asio::placeholders::error));
+
+
+                    char text[30] = {0};
+
+                    std::ifstream openhd_version_file("/openhd_version.txt");
+                    std::string openhd_version((std::istreambuf_iterator<char>(openhd_version_file)), std::istreambuf_iterator<char>());
+
+                    strncpy(text, openhd_version.c_str(), sizeof(text));
+                    if (text[29] != '\0') {
+                        text[29] = '\0';
+                    }
+
+                    mavlink_message_t outgoing_msg;
+                    mavlink_msg_openhd_version_message_pack(this->m_sysid, this->m_compid, &outgoing_msg, msg.sysid, msg.compid, text);
+                    len = mavlink_msg_to_send_buffer(raw, &outgoing_msg);
+
+                    this->m_socket->async_send(boost::asio::buffer(raw, len),
+                                               boost::bind(&Microservice::handle_write,
+                                                           this,
+                                                           boost::asio::placeholders::error));
                     break;
                 }
                 default: {
