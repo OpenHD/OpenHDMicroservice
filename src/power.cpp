@@ -30,7 +30,6 @@ constexpr uint8_t SERVICE_COMPID = MAV_COMP_ID_USER1;
 
 PowerMicroservice::PowerMicroservice(boost::asio::io_service &io_service): Microservice(io_service), m_status_interval(5), m_status_timer(io_service, m_status_interval) {
     set_compid(SERVICE_COMPID);
-    m_status_interval = boost::posix_time::seconds(5);
 }
 
 
