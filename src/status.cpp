@@ -81,7 +81,7 @@ void StatusMicroservice::handle_udp_read(const boost::system::error_code& error,
 void StatusMicroservice::send_status_message(MAV_SEVERITY severity, std::string message) {
     std::cout << "StatusMicroservice::send_status_message" << std::endl;
 
-    auto timestamp = boost::posix_time::microsec_clock::local_time().time_of_day().total_milliseconds();
+    uint64_t timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 
     /*
      * Store the message first, so we can send all local messages to any GCS that requests them later on
