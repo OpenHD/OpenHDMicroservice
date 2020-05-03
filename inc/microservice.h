@@ -43,14 +43,15 @@ protected:
 private:
     std::chrono::steady_clock::time_point m_boot_time;
 
-    boost::posix_time::seconds m_heartbeat_interval;
-    boost::asio::deadline_timer m_heartbeat_timer;
 
-    boost::posix_time::seconds m_sys_time_interval;
-    boost::asio::deadline_timer m_sys_time_timer;
+    std::chrono::seconds m_heartbeat_interval;
+    boost::asio::steady_timer m_heartbeat_timer;
 
-    boost::posix_time::seconds m_reconnect_interval;
-    boost::asio::deadline_timer m_reconnect_timer;
+    std::chrono::seconds m_sys_time_interval;
+    boost::asio::steady_timer m_sys_time_timer;
+
+    std::chrono::seconds m_reconnect_interval;
+    boost::asio::steady_timer m_reconnect_timer;
 };
 
 #endif
