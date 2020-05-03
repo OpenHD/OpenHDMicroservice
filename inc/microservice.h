@@ -41,7 +41,7 @@ protected:
     mavlink_status_t m_mavlink_status;
 
 private:
-    long m_boot_time = 0;
+    std::chrono::steady_clock::time_point m_boot_time;
 
     boost::posix_time::seconds m_heartbeat_interval;
     boost::asio::deadline_timer m_heartbeat_timer;

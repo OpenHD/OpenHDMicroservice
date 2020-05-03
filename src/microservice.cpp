@@ -21,7 +21,7 @@ using namespace boost::asio;
 
 Microservice::Microservice(boost::asio::io_service &io_service): m_io_service(io_service),
                                                                  m_socket(new boost::asio::ip::tcp::socket(io_service)), 
-                                                                 m_boot_time(boost::posix_time::microsec_clock::local_time().time_of_day().total_milliseconds()),
+                                                                 m_boot_time(std::chrono::steady_clock::now()),
                                                                  m_heartbeat_interval(5), 
                                                                  m_heartbeat_timer(io_service, m_heartbeat_interval), 
                                                                  m_sys_time_interval(5), 
@@ -116,10 +116,12 @@ void Microservice::send_system_time(const boost::system::error_code& error) {
     uint8_t raw[MAVLINK_MAX_PACKET_LEN];
     int len = 0;
 
-    auto now = boost::posix_time::microsec_clock::local_time().time_of_day().total_microseconds();
+    uint64_t boot_time = std::chrono::duration_cast<std::chrono::milliseconds>(m_boot_time.time_since_epoch()).count();
+
+    uint64_t now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 
     mavlink_message_t outgoing_msg;
-    mavlink_msg_system_time_pack(this->m_sysid, this->m_compid, &outgoing_msg, now, m_boot_time);
+    mavlink_msg_system_time_pack(this->m_sysid, this->m_compid, &outgoing_msg, now, boot_time);
     len = mavlink_msg_to_send_buffer(raw, &outgoing_msg);
 
 
