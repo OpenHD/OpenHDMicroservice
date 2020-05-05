@@ -6,7 +6,7 @@ extern "C" {
 
 typedef struct {
     uint8_t level;
-    int message[50];
+    uint8_t message[50];
 }
 #ifndef _MSC_VER
 __attribute__((packed))
