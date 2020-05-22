@@ -46,6 +46,13 @@ void StatusMicroservice::setup() {
 
     Microservice::setup();
     start_udp_read();
+    
+    /*
+     * Signal to the rest of the early boot system that the status service is now listening,
+     * so it's safe to start sending messages and status events.
+     */
+    FILE *fp = fopen("/tmp/status_service", "ab+");
+    fclose(fp);
 }
 
 
