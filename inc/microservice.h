@@ -42,7 +42,7 @@ protected:
 
     mavlink_status_t m_mavlink_status;
 
-private:
+
     std::chrono::steady_clock::time_point m_boot_time;
 
 
