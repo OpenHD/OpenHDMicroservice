@@ -32,6 +32,18 @@ StatusMicroservice::StatusMicroservice(boost::asio::io_service &io_service): Mic
 
 void StatusMicroservice::setup() {
     std::cout << "StatusMicroservice::setup()" << std::endl;
+
+    /*
+     * The timing at early boot is fairly strict, we need OpenHDBoot to quickly 
+     * connect to the status service and start displaying messages, which requires 
+     * receiving heartbeat and sys_time messages as fast as possible. OpenHDBoot will then
+     * immediately send OPENHD_CMD_GET_STATUS_MESSAGES to this service, and once that happens
+     * we can safely set these intervals back to minimal intervals to reduce air traffic in 
+     * normal use.
+     */
+    m_heartbeat_interval = std::chrono::seconds(1);
+    m_sys_time_interval = std::chrono::seconds(1);
+
     Microservice::setup();
     start_udp_read();
 }
@@ -144,6 +156,13 @@ void StatusMicroservice::process_mavlink_message(mavlink_message_t msg) {
                     std::cout << "OPENHD_CMD_GET_STATUS_MESSAGES" << std::endl;
                     uint8_t raw[MAVLINK_MAX_PACKET_LEN];
                     int len = 0;
+
+                    /*
+                     * Now we can safely set these intervals back to minimal intervals to reduce air traffic in 
+                     * normal use.
+                     */
+                    m_heartbeat_interval = std::chrono::seconds(5);
+                    m_sys_time_interval = std::chrono::seconds(5);
 
                     // acknowledge the command, then reply
                     mavlink_message_t ack;
