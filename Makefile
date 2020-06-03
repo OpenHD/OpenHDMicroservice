@@ -7,6 +7,10 @@ ifeq ($(PREFIX),)
 	PREFIX := /usr/local
 endif
 
+ifdef $(DESTDIR)
+	$(DESTDIR) := $(DESTDIR)/
+endif
+
 SYSTEM_INCLUDE = $(PREFIX)/include
 LDFLAGS = -L$(PREFIX)/lib -llifepo4wered -lboost_system -lboost_program_options
 
@@ -44,11 +48,12 @@ clean:
 
 .PHONY: install
 install: openhd_microservice
-	install -d $(PREFIX)/bin/
-	install -m 755 openhd_microservice $(PREFIX)/bin/
-	install -m 644 openhd_microservice@.service /etc/systemd/system/
-	install -d /etc/openhd
-	install -m 644 openhd_microservice.conf /etc/openhd/
+	install -d $(DESTDIR)$(PREFIX)/bin/
+	install -d $(DESTDIR)/etc/systemd/system
+	install -m 755 openhd_microservice $(DESTDIR)$(PREFIX)/bin/
+	install -m 644 openhd_microservice@.service $(DESTDIR)/etc/systemd/system/
+	install -d $(DESTDIR)/etc/openhd
+	install -m 644 openhd_microservice.conf $(DESTDIR)/etc/openhd/
 
 .PHONY: enable
 enable: install
