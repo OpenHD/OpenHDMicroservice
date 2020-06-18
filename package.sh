@@ -27,7 +27,7 @@ VERSION=$(git describe)
 
 rm ${PACKAGE_NAME}_${VERSION//v}_${PACKAGE_ARCH}.deb > /dev/null 2>&1
 
-fpm -s dir -t deb -n ${PACKAGE_NAME} -v ${VERSION//v} -C ${TMPDIR} \
+fpm -a ${PACKAGE_ARCH} -s dir -t deb -n ${PACKAGE_NAME} -v ${VERSION//v} -C ${TMPDIR} \
   -p ${PACKAGE_NAME}_VERSION_ARCH.deb \
   -d "libasio-dev >= 1.10" \
   -d "libboost-system-dev >= 1.62.0" \
