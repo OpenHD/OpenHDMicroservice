@@ -1,5 +1,16 @@
 #!/bin/bash
 
+PLATFORM=$1
+DISTRO=$2
+
+
+if [[ "${PLATFORM}" == "pi" ]]; then
+    OS="raspbian"
+    ARCH="arm"
+    PACKAGE_ARCH="armhf"
+fi
+
+
 PACKAGE_NAME=openhd-microservice
 
 TMPDIR=/tmp/${PACKAGE_NAME}-installdir
