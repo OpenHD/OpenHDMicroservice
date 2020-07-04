@@ -10,6 +10,7 @@ if [[ "${PLATFORM}" == "pi" ]]; then
     PACKAGE_ARCH="armhf"
 fi
 
+apt -y install libasio-dev libboost-system-dev libboost-program-options-dev
 
 PACKAGE_NAME=openhd-microservice
 
