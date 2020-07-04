@@ -1,6 +1,6 @@
 language: cpp
 os: linux
-dist: bionic
+dist: focal
 before_install:
   - sudo docker run --privileged linuxkit/binfmt:v0.6
   - sudo docker run --rm --privileged multiarch/qemu-user-static:register
