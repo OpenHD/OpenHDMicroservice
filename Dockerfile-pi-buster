@@ -16,7 +16,7 @@ RUN apt -y purge python3-configparser
 
 RUN gem install fpm
 
-RUN pip install cloudsmith-cli
+RUN pip3 install cloudsmith-cli
 
 WORKDIR /data
 
