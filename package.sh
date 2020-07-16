@@ -2,7 +2,7 @@
 
 PLATFORM=$1
 DISTRO=$2
-
+BUILD_TYPE=$3
 
 if [[ "${PLATFORM}" == "pi" ]]; then
     OS="raspbian"
@@ -10,6 +10,14 @@ if [[ "${PLATFORM}" == "pi" ]]; then
     PACKAGE_ARCH="armhf"
 fi
 
+if [ "${BUILD_TYPE}" == "docker" ]; then
+    cat << EOF > /etc/resolv.conf
+options rotate
+options timeout:1
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+EOF
+fi
 
 apt-get install -y apt-transport-https
 curl -1sLf 'https://dl.cloudsmith.io/public/openhd/openhd-2-0/cfg/gpg/gpg.B9F0E99CF5787237.key' | apt-key add -
