@@ -157,19 +157,23 @@ static bool read_ina2xx_register(uint8_t reg, uint8_t count, uint8_t *data) {
     return result;
 }
 
-void ina2xx_init() {
+int ina2xx_init() {
     int16_t calibration = 4096;
     if (!write_ina2xx_register(CALIBRATION_REG, calibration)) {
         fprintf( stderr, "Error setting INA2XX calibration: %s\n", strerror(errno));
+        return -1;
     }
 
     uint16_t config = CONFIG_BVOLTAGERANGE_32V | CONFIG_GAIN_8_320MV | CONFIG_BADCRES_12BIT | CONFIG_SADCRES_12BIT_1S_532US | CONFIG_MODE_SANDBVOLT_CONTINUOUS;
     if (!write_ina2xx_register(CONFIG_REG, config)) {
         fprintf( stderr, "Error setting INA2XX config: %s\n", strerror(errno));
+        return -1;
     }
+
+    return 0;
 }
 
-void get_ina2xx_data(ina2xx_data *sensor_data) {
+int get_ina2xx_data(ina2xx_data *sensor_data) {
     fprintf(stderr, "Getting INA2XX data\n");
     // All data conversions necessary to match the format and units expected by
     // groundstatus_data_t should be done here
@@ -181,7 +185,7 @@ void get_ina2xx_data(ina2xx_data *sensor_data) {
 
     if (!read_ina2xx_register(BUS_REG, 2, (uint8_t*)&data)) {
         fprintf( stderr, "Error getting INA2XX voltage: %s\n", strerror(errno));
-        return;
+        return -1;
     }
     fprintf(stderr, "voltage raw byte1: %d, byte2: %d\n", data[0], data[1]);
 
@@ -190,7 +194,7 @@ void get_ina2xx_data(ina2xx_data *sensor_data) {
 
     if (!read_ina2xx_register(CURRENT_REG, 2, (uint8_t*)&data)) {
         fprintf( stderr, "Error getting INA2XX current: %s\n", strerror(errno));
-        return;
+        return -1;
     }
     fprintf(stderr, "current raw byte1: %d, byte2: %d\n", data[0], data[1]);
 
@@ -202,6 +206,7 @@ void get_ina2xx_data(ina2xx_data *sensor_data) {
     fprintf(stderr, "voltage: %d\n", voltage);
     fprintf(stderr, "current: %d\n", current);
 
+    return 0;
 }
 
 #endif

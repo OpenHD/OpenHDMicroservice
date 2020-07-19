@@ -9,7 +9,7 @@ typedef struct ina2xx_data {
     int32_t vbat;
 } ina2xx_data;
 
-void ina2xx_init();
-void get_ina2xx_data(ina2xx_data *sensor_data);
+int ina2xx_init();
+int get_ina2xx_data(ina2xx_data *sensor_data);
 #endif
 
