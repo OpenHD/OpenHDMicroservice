@@ -71,9 +71,8 @@ void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code
     auto iout = read_lifepo4wered(IOUT);
     auto vbat = read_lifepo4wered(VBAT);
 
-    // don't send any message if an error is returned by read_lifepo4wered, usually means it isn't
-    // even connected to this system
-    if (vin < 0 || vout < 0 || vbat < 0 || iout < 0) {
+    // don't send any message if an error is encountered
+    if (out < 0 || iout < 0) {
         this->m_status_timer.expires_at(this->m_status_timer.expires_at() + this->m_status_interval);
         this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
                                                     this, 
