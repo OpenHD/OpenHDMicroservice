@@ -27,7 +27,7 @@ echo "deb https://dl.cloudsmith.io/public/openhd/openhd-2-0/deb/${OS} ${DISTRO} 
 
 apt -y update
 
-apt -y install libasio-dev libboost-system-dev libboost-program-options-dev lifepoweredpi
+apt -y install libasio-dev libboost-filesystem-dev libboost-system-dev libboost-program-options-dev lifepoweredpi
 
 PACKAGE_NAME=openhd-microservice
 
@@ -48,6 +48,7 @@ rm ${PACKAGE_NAME}_${VERSION//v}_${PACKAGE_ARCH}.deb > /dev/null 2>&1
 fpm -a ${PACKAGE_ARCH} -s dir -t deb -n ${PACKAGE_NAME} -v ${VERSION//v} -C ${TMPDIR} \
   -p ${PACKAGE_NAME}_VERSION_ARCH.deb \
   -d "libasio-dev >= 1.10" \
+  -d "libboost-filesystem-dev >= 1.62.0" \
   -d "libboost-system-dev >= 1.62.0" \
   -d "libboost-program-options-dev >= 1.62.0" \
   -d "openhd-router >= 0.1.3" || exit 1
