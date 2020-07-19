@@ -7,8 +7,6 @@
 
 #include "ina2xx.h"
 
-#if defined(ENABLE_INA2XX)
-
 #include <unistd.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -208,5 +206,3 @@ int get_ina2xx_data(ina2xx_data *sensor_data) {
 
     return 0;
 }
-
-#endif
