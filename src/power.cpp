@@ -45,13 +45,13 @@ void PowerMicroservice::setup() {
 
 
     switch (m_sensor_type) {
-        case PowerSensorLifepo4weredPi: {
-            this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
-                                                        this, 
-                                                        boost::asio::placeholders::error));
+        case PowerSensorNone: {
             break;
         }
         default: {
+            this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
+                                            this, 
+                                            boost::asio::placeholders::error));
             break;
         }
     }
