@@ -49,7 +49,7 @@ void PowerMicroservice::setup() {
             break;
         }
         default: {
-            this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
+            this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_power, 
                                             this, 
                                             boost::asio::placeholders::error));
             break;
@@ -58,8 +58,8 @@ void PowerMicroservice::setup() {
 }
 
 
-void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code& error) {
-    std::cout << "PowerMicroservice::send_openhd_ground_power" << std::endl;
+void PowerMicroservice::send_openhd_power(const boost::system::error_code& error) {
+    std::cout << "PowerMicroservice::send_openhd_power" << std::endl;
 
     uint8_t raw[MAVLINK_MAX_PACKET_LEN];
     int len = 0;
@@ -99,14 +99,14 @@ void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code
     // don't send any message if an error is encountered
     if (vout < 0 || iout < 0) {
         this->m_status_timer.expires_at(this->m_status_timer.expires_at() + this->m_status_interval);
-        this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
+        this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_power, 
                                                     this, 
                                                     boost::asio::placeholders::error));
         return;
     }
 
     mavlink_message_t outgoing_msg;
-    mavlink_msg_openhd_ground_power_pack(this->m_sysid, this->m_compid, &outgoing_msg, 0, 0, vin, vout, vbat, iout, bat_type);
+    mavlink_msg_openhd_power_pack(this->m_sysid, this->m_compid, &outgoing_msg, 0, 0, vin, vout, vbat, iout, bat_type);
     len = mavlink_msg_to_send_buffer(raw, &outgoing_msg);
 
     this->m_socket->async_send(boost::asio::buffer(raw, len),
@@ -115,7 +115,7 @@ void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code
                                            boost::asio::placeholders::error));
 
     this->m_status_timer.expires_at(this->m_status_timer.expires_at() + this->m_status_interval);
-    this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
+    this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_power, 
                                                 this, 
                                                 boost::asio::placeholders::error));
 }

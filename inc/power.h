@@ -22,7 +22,7 @@ public:
 
     void setup();
 
-    void send_openhd_ground_power(const boost::system::error_code& error);
+    void send_openhd_power(const boost::system::error_code& error);
 
     virtual void process_mavlink_message(mavlink_message_t msg);
     
