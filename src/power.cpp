@@ -72,11 +72,12 @@ void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code
     auto vbat = read_lifepo4wered(VBAT);
 
     // don't send any message if an error is encountered
-    if (out < 0 || iout < 0) {
+    if (vout < 0 || iout < 0) {
         this->m_status_timer.expires_at(this->m_status_timer.expires_at() + this->m_status_interval);
         this->m_status_timer.async_wait(boost::bind(&PowerMicroservice::send_openhd_ground_power, 
                                                     this, 
                                                     boost::asio::placeholders::error));
+        return;
     }
 
     mavlink_message_t outgoing_msg;
