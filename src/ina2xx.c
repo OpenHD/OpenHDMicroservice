@@ -199,7 +199,7 @@ int get_ina2xx_data(ina2xx_data *sensor_data) {
     current = ((data[0] << 8) | data[1]) / 10;
     sensor_data->iout = current;
 
-    sensor_data->vout = 0;
+    sensor_data->vout = voltage;
 
     fprintf(stderr, "voltage: %d\n", voltage);
     fprintf(stderr, "current: %d\n", current);

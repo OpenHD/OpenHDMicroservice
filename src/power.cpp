@@ -86,6 +86,7 @@ void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code
         case PowerSensorINA2XX: {
             ina2xx_data data;
             if (get_ina2xx_data(&data) == 0) {
+                vin = data.vin;
                 vout = data.vout;
                 iout = data.iout;
             }
