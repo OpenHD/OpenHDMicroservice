@@ -83,6 +83,15 @@ void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code
             bat_type = MAV_BATTERY_TYPE_LIFE;
             break;
         }
+        case PowerSensorINA2XX: {
+            ina2xx_data data;
+            if (get_ina2xx_data(&data) == 0) {
+                vout = data.vout;
+                iout = data.iout;
+            }
+            bat_type = MAV_BATTERY_TYPE_UNKNOWN;
+            break;
+        }
     }
 
 
