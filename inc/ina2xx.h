@@ -3,10 +3,10 @@
 #if defined(ENABLE_INA2XX)
 
 typedef struct ina2xx_data {
-    float vin;
-    float vout;
-    float iout;
-    float vbat;
+    int32_t vin;
+    int32_t vout;
+    int32_t iout;
+    int32_t vbat;
 } ina2xx_data;
 
 void ina2xx_init();

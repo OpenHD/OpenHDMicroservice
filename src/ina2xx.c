@@ -174,10 +174,10 @@ void get_ina2xx_data(ina2xx_data *sensor_data) {
     // All data conversions necessary to match the format and units expected by
     // groundstatus_data_t should be done here
     uint8_t data[2] = {0, 0};
-    float current;
-    float voltage;
+    int current;
+    int voltage;
 
-    sensor_data->vbat = 0.0;
+    sensor_data->vbat = 0;
 
     if (!read_ina2xx_register(BUS_REG, 2, (uint8_t*)&data)) {
         fprintf( stderr, "Error getting INA2XX voltage: %s\n", strerror(errno));
@@ -185,7 +185,7 @@ void get_ina2xx_data(ina2xx_data *sensor_data) {
     }
     fprintf(stderr, "voltage raw byte1: %d, byte2: %d\n", data[0], data[1]);
 
-    voltage = (float)((((data[0] << 8) | data[1]) & 0xFFF8) >> 1) / 1000.0;
+    voltage = ((((data[0] << 8) | data[1]) & 0xFFF8) >> 1);
     sensor_data->vin = voltage;
 
     if (!read_ina2xx_register(CURRENT_REG, 2, (uint8_t*)&data)) {
@@ -194,13 +194,14 @@ void get_ina2xx_data(ina2xx_data *sensor_data) {
     }
     fprintf(stderr, "current raw byte1: %d, byte2: %d\n", data[0], data[1]);
 
-    current = (float)((data[0] << 8) | data[1]) / 10 / 1000.0;
+    current = ((data[0] << 8) | data[1]) / 10;
     sensor_data->iout = current;
 
-    sensor_data->vout = 0.0;
+    sensor_data->vout = 0;
 
-    fprintf(stderr, "voltage: %.2f\n", voltage);
-    fprintf(stderr, "current: %.2f\n", current);
+    fprintf(stderr, "voltage: %d\n", voltage);
+    fprintf(stderr, "current: %d\n", current);
+
 }
 
 #endif
