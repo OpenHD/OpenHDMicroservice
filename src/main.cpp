@@ -14,6 +14,7 @@ using namespace boost::asio;
 #include "camera.h"
 #include "gpio.h"
 #include "status.h"
+#include "sensor.h"
 
 
 int main(int argc, char *argv[]) {
@@ -31,6 +32,7 @@ int main(int argc, char *argv[]) {
                           ("power", "enable power sensor microservice")
                           ("gpio", "enable gpio control microservice")
                           ("status", "enable status microservice")
+                          ("sensor", "enable sensor microservice")
                           ("sysid", boost::program_options::value<int>()->required(), "local mavlink system id");
 
         boost::program_options::variables_map vm;
@@ -54,6 +56,9 @@ int main(int argc, char *argv[]) {
         } else if (vm.count("status")) {
             std::cout << "Status microservice enabled ";
             service = new StatusMicroservice(io_service);
+        } else if (vm.count("sensor")) {
+            std::cout << "Sensor sensor microservice enabled ";
+            service = new SensorMicroservice(io_service);
         } else {
             std::cout << "No service enabled" << std::endl;
             exit(1);
