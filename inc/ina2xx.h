@@ -1,5 +1,7 @@
 #pragma once
 
+#include "stdint.h"
+
 typedef struct ina2xx_data {
     int32_t vin;
     int32_t vout;
