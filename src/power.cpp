@@ -64,12 +64,27 @@ void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code
     uint8_t raw[MAVLINK_MAX_PACKET_LEN];
     int len = 0;
 
-    uint8_t bat_type = MAV_BATTERY_TYPE_LIFE;
+    uint8_t bat_type = MAV_BATTERY_TYPE_UNKNOWN;
 
-    auto vin = read_lifepo4wered(VIN);
-    auto vout = read_lifepo4wered(VOUT);
-    auto iout = read_lifepo4wered(IOUT);
-    auto vbat = read_lifepo4wered(VBAT);
+    int vin = -1;
+    int vout = -1;
+    int iout = -1;
+    int vbat = -1;
+
+    switch (m_sensor_type) {
+        case PowerSensorNone: {
+            break;
+        }
+        case PowerSensorLifepo4weredPi: {
+            vin = read_lifepo4wered(VIN);
+            vout = read_lifepo4wered(VOUT);
+            iout = read_lifepo4wered(IOUT);
+            vbat = read_lifepo4wered(VBAT);
+            bat_type = MAV_BATTERY_TYPE_LIFE;
+            break;
+        }
+    }
+
 
     // don't send any message if an error is encountered
     if (vout < 0 || iout < 0) {
@@ -81,7 +96,7 @@ void PowerMicroservice::send_openhd_ground_power(const boost::system::error_code
     }
 
     mavlink_message_t outgoing_msg;
-    mavlink_msg_openhd_ground_power_pack(this->m_sysid, this->m_compid, &outgoing_msg, 0, 0, (float)vin / 1000.0, (float)vout / 1000.0, (float)vbat / 1000.0, (float)iout / 1000.0, bat_type);
+    mavlink_msg_openhd_ground_power_pack(this->m_sysid, this->m_compid, &outgoing_msg, 0, 0, vin, vout, vbat, iout, bat_type);
     len = mavlink_msg_to_send_buffer(raw, &outgoing_msg);
 
     this->m_socket->async_send(boost::asio::buffer(raw, len),
