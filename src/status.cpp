@@ -22,6 +22,20 @@
 
 constexpr uint8_t SERVICE_COMPID = MAV_COMP_ID_USER3;
 
+std::string get_openhd_version() {
+    std::array<char, 128> buffer;
+    std::string result;
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen("dpkg-query --showformat='${Version}' --show openhd", "r"), pclose);
+    if (!pipe) {
+        throw std::runtime_error("Checking openhd version failed");
+    }
+    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+        result += buffer.data();
+    }
+    return result;
+}
+
+
 StatusMicroservice::StatusMicroservice(boost::asio::io_service &io_service): Microservice(io_service), m_udp_socket(io_service) {
     set_compid(SERVICE_COMPID);
 
@@ -32,6 +46,13 @@ StatusMicroservice::StatusMicroservice(boost::asio::io_service &io_service): Mic
 
 void StatusMicroservice::setup() {
     std::cout << "StatusMicroservice::setup()" << std::endl;
+
+    try {
+        m_openhd_version = get_openhd_version();
+    } catch (std::exception& ex) {
+        // the exception itself doesn't matter, will just mean the m_openhd_version default
+        // gets sent to QOpenHD
+    }
 
     /*
      * The timing at early boot is fairly strict, we need OpenHDBoot to quickly 
@@ -235,13 +256,9 @@ void StatusMicroservice::process_mavlink_message(mavlink_message_t msg) {
                                                            this,
                                                            boost::asio::placeholders::error));
 
-
                     char text[30] = {0};
 
-                    std::ifstream openhd_version_file("/openhd_version.txt");
-                    std::string openhd_version((std::istreambuf_iterator<char>(openhd_version_file)), std::istreambuf_iterator<char>());
-
-                    strncpy(text, openhd_version.c_str(), sizeof(text));
+                    strncpy(text, m_openhd_version.c_str(), sizeof(text));
                     if (text[29] != '\0') {
                         text[29] = '\0';
                     }

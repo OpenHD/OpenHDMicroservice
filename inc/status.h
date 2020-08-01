@@ -43,6 +43,8 @@ public:
     std::vector<StatusMessage> m_status_messages;
 
     boost::asio::ip::udp::socket m_udp_socket;
+
+    std::string m_openhd_version = "unknown";
 };
 
 #endif
