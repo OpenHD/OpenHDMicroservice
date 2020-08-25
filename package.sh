@@ -1,14 +1,10 @@
 #!/bin/bash
 
-PLATFORM=$1
-DISTRO=$2
-BUILD_TYPE=$3
+PACKAGE_ARCH=$1
+OS=$2
+DISTRO=$3
+BUILD_TYPE=$4
 
-if [[ "${PLATFORM}" == "pi" ]]; then
-    OS="raspbian"
-    ARCH="arm"
-    PACKAGE_ARCH="armhf"
-fi
 
 if [ "${BUILD_TYPE}" == "docker" ]; then
     cat << EOF > /etc/resolv.conf
