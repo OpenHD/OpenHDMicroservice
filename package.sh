@@ -24,9 +24,9 @@ curl -1sLf 'https://dl.cloudsmith.io/public/openhd/openhd-2-1/cfg/gpg/gpg.0AD501
 
 echo "deb https://dl.cloudsmith.io/public/openhd/openhd-2-1/deb/${OS} ${DISTRO} main" > /etc/apt/sources.list.d/openhd-2-1.list
 
-apt -y update
+apt -y update || exit 1
 
-apt -y install libasio-dev libboost-filesystem-dev libboost-system-dev libboost-program-options-dev lifepoweredpi
+apt -y install libasio-dev libboost-filesystem-dev libboost-system-dev libboost-program-options-dev lifepoweredpi || exit 1
 
 PACKAGE_NAME=openhd-microservice
 
