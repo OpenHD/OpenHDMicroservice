@@ -1,7 +1,7 @@
 
 MAVLINK_DIR = $(PWD)/lib/mavlink_generated/include/mavlink/v2.0 
 SRC_DIR = $(PWD)/src
-INC_DIR = -I$(PWD)/inc -I$(PWD)/lib/RTIMULib2/RTIMULib -I$(PWD)/lib/RTIMULib2/RTIMULib/IMUDrivers
+INC_DIR = `pkg-config --cflags gstreamer-base-1.0` -I$(PWD)/inc -I$(PWD)/lib/RTIMULib2/RTIMULib -I$(PWD)/lib/RTIMULib2/RTIMULib/IMUDrivers
 
 ifeq ($(PREFIX),)
 	PREFIX := /usr/local
@@ -12,7 +12,7 @@ ifdef $(DESTDIR)
 endif
 
 SYSTEM_INCLUDE = $(PREFIX)/include
-LDFLAGS = -L$(PREFIX)/lib -llifepo4wered -lboost_filesystem -lboost_regex -lboost_system -lboost_program_options -lstdc++fs
+LDFLAGS = `pkg-config --libs gstreamer-base-1.0` -L$(PREFIX)/lib -llifepo4wered -lboost_filesystem -lboost_regex -lboost_system -lboost_program_options -lstdc++fs
 
 
 openhd_microservice: RTFusion.o RTFusionRTQF.o RTMath.o RTFusionKalman4.o RTIMUAccelCal.o RTIMUHal.o RTIMUMagCal.o RTIMUSettings.o RTIMU.o RTIMUGD20M303DLHC.o RTIMUGD20HM303DLHC.o RTIMUGD20HM303D.o RTIMULSM9DS0.o RTIMULSM9DS1.o RTIMUMPU9150.o RTIMUMPU9250.o RTIMUBMX055.o RTIMUBNO055.o RTIMUNull.o RTPressure.o RTPressureBMP180.o RTPressureLPS25H.o RTPressureMS5611.o RTPressureMS5637.o RTHumidity.o RTHumidityHTS221.o RTHumidityHTU21D.o RTIMUHMC5883LADXL345.o bcm2835.o ina2xx.o microservice.o gpio.o camera.o power.o status.o sensor.o main.o 
