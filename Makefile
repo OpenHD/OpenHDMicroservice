@@ -12,6 +12,7 @@ ifdef $(DESTDIR)
 endif
 
 SYSTEM_INCLUDE = $(PREFIX)/include
+LOCAL_INCLUDE = $(PWD)/lib/include
 LDFLAGS = `pkg-config --libs gstreamer-base-1.0` -L$(PREFIX)/lib -llifepo4wered -lboost_filesystem -lboost_regex -lboost_system -lboost_program_options -lstdc++fs
 
 
@@ -19,31 +20,31 @@ openhd_microservice: RTFusion.o RTFusionRTQF.o RTMath.o RTFusionKalman4.o RTIMUA
 	g++ -g -pthread -o openhd_microservice RTFusion.o RTFusionRTQF.o RTMath.o RTFusionKalman4.o RTIMUAccelCal.o RTIMUHal.o RTIMUMagCal.o RTIMUSettings.o RTIMU.o RTIMUGD20M303DLHC.o RTIMUGD20HM303DLHC.o RTIMUGD20HM303D.o RTIMULSM9DS0.o RTIMULSM9DS1.o RTIMUMPU9150.o RTIMUMPU9250.o RTIMUBMX055.o RTIMUBNO055.o RTIMUNull.o RTPressure.o RTPressureBMP180.o RTPressureLPS25H.o RTPressureMS5611.o RTPressureMS5637.o RTHumidity.o RTHumidityHTS221.o RTHumidityHTU21D.o RTIMUHMC5883LADXL345.o bcm2835.o ina2xx.o microservice.o gpio.o camera.o power.o status.o sensor.o main.o $(LDFLAGS)
 
 main.o: $(SRC_DIR)/main.cpp
-	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) $(INC_DIR) $(SRC_DIR)/main.cpp
+	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(LOCAL_INCLUDE) $(INC_DIR) $(SRC_DIR)/main.cpp
 
 microservice.o: $(SRC_DIR)/microservice.cpp
-	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) $(INC_DIR) $(SRC_DIR)/microservice.cpp
+	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(LOCAL_INCLUDE) $(INC_DIR) $(SRC_DIR)/microservice.cpp
 
 camera.o: $(SRC_DIR)/camera.cpp
 	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) $(INC_DIR) $(SRC_DIR)/camera.cpp
 
 power.o: $(SRC_DIR)/power.cpp
-	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) $(INC_DIR) $(SRC_DIR)/power.cpp
+	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(LOCAL_INCLUDE) $(INC_DIR) $(SRC_DIR)/power.cpp
 
 gpio.o: $(SRC_DIR)/gpio.cpp
-	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) $(INC_DIR) $(SRC_DIR)/gpio.cpp
+	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(LOCAL_INCLUDE) $(INC_DIR) $(SRC_DIR)/gpio.cpp
 
 status.o: $(SRC_DIR)/status.cpp
-	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) $(INC_DIR) $(SRC_DIR)/status.cpp
+	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(LOCAL_INCLUDE) $(INC_DIR) $(SRC_DIR)/status.cpp
 
 sensor.o: $(SRC_DIR)/sensor.cpp
-	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) $(INC_DIR) $(SRC_DIR)/sensor.cpp
+	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(LOCAL_INCLUDE) $(INC_DIR) $(SRC_DIR)/sensor.cpp
 
 ina2xx.o: $(SRC_DIR)/ina2xx.c
-	gcc -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) $(INC_DIR) $(SRC_DIR)/ina2xx.c
+	gcc -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(LOCAL_INCLUDE) $(INC_DIR) $(SRC_DIR)/ina2xx.c
 
 bcm2835.o: $(SRC_DIR)/bcm2835.c
-	gcc -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) $(INC_DIR) $(SRC_DIR)/bcm2835.c
+	gcc -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(LOCAL_INCLUDE) $(INC_DIR) $(SRC_DIR)/bcm2835.c
 
 
 
