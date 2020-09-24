@@ -6,25 +6,98 @@
 #include <unistd.h>
 
 #include <iostream>
+#include <stdexcept>
+#include <vector>
+#include <fstream>
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 
+#include <json.hpp>
+
 #include <openhd/mavlink.h>
 
-#include "camera.h"
+#include "cameramicroservice.h"
+#include "camerastream.h"
+#include "gstreamerstream.h"
+
 #include "constants.h"
 
 
 constexpr uint8_t SERVICE_COMPID = MAV_COMP_ID_CAMERA;
 
 
-CameraMicroservice::CameraMicroservice(boost::asio::io_service &io_service): Microservice(io_service) {
+CameraMicroservice::CameraMicroservice(boost::asio::io_service &io_service, PlatformType platform): Microservice(io_service, platform) {
     set_compid(SERVICE_COMPID);
 }
 
 
-void CameraMicroservice::setup() {}
+void CameraMicroservice::setup() {
+    process_manifest();
+}
+
+
+void CameraMicroservice::process_manifest() {
+    try {
+        std::ifstream f("/tmp/camera_manifest");
+        nlohmann::json j;
+        f >> j;
+
+        int port = 5600;
+
+        for (auto _camera : j) {
+
+            Camera camera;
+            std::string camera_type = _camera["type"];
+            camera.type = camera_type_from_string(camera_type);
+            camera.name = _camera["name"];
+            camera.vendor = _camera["vendor"];
+            camera.vid = _camera["vid"];
+            camera.pid = _camera["pid"];
+            camera.bus = _camera["bus"];
+
+
+            std::vector<CameraEndpoint> camera_endpoints;
+
+            auto _endpoints = _camera["endpoints"];
+            for (auto _endpoint : _endpoints) {
+                CameraEndpoint endpoint;
+                endpoint.device_node   = _endpoint["device_node"];
+                endpoint.support_h264  = _endpoint["support_h264"];
+                endpoint.support_h265  = _endpoint["support_h265"];
+                endpoint.support_mjpeg = _endpoint["support_mjpeg"];
+                endpoint.support_raw   = _endpoint["support_raw"];
+                for (auto& format : _endpoint["formats"]) {
+                    endpoint.formats.push_back(format);
+                }
+
+                camera_endpoints.push_back(endpoint);
+            }
+
+            switch (camera.type) {
+                case CameraTypeRaspberryPiCSI:
+                case CameraTypeJetsonCSI: 
+                case CameraTypeIP:         
+                case CameraTypeRockchipCSI:
+                case CameraTypeUVC: {
+                    GStreamerStream stream(m_io_service, m_platform_type, camera, camera_endpoints, port);
+                    m_camera_streams.push_back(stream);
+                    break;
+                }
+                default: {
+                    std::cerr << "Unknown camera type, skipping" << std::endl;
+                }
+            }
+            std::cerr << "Done processing camera" << std::endl;
+
+            port++;
+        }
+    } catch (std::exception &ex) {
+        // don't do anything, but send an error message to the user through the status service
+        std::cerr << "Camera error: " << ex.what() << std::endl;
+    }
+
+}
 
 
 void CameraMicroservice::process_mavlink_message(mavlink_message_t msg) {
@@ -140,4 +213,22 @@ void CameraMicroservice::process_mavlink_message(mavlink_message_t msg) {
         }
     }
 }
+
+
+CameraType CameraMicroservice::camera_type_from_string(std::string str) {
+    if (str == "pi-csi") {
+        return CameraTypeRaspberryPiCSI;
+    } else if (str == "jetson-csi") {
+        return CameraTypeJetsonCSI;
+    } else if (str == "rockchip-csi") {
+        return CameraTypeRockchipCSI;
+    } else if (str == "uvc") {
+        return CameraTypeUVC;
+    } else if (str == "ip") {
+        return CameraTypeIP;
+    }
+
+    return CameraTypeUnknown;
+}
+
 

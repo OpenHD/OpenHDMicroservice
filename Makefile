@@ -25,8 +25,8 @@ main.o: $(SRC_DIR)/main.cpp
 microservice.o: $(SRC_DIR)/microservice.cpp
 	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(LOCAL_INCLUDE) $(INC_DIR) $(SRC_DIR)/microservice.cpp
 
-camera.o: $(SRC_DIR)/camera.cpp
-	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) $(INC_DIR) $(SRC_DIR)/camera.cpp
+cameramicroservice.o: $(SRC_DIR)/cameramicroservice.cpp
+	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(LOCAL_INCLUDE) $(INC_DIR) $(SRC_DIR)/cameramicroservice.cpp
 
 camerastream.o: $(SRC_DIR)/camerastream.cpp
 	g++ -std=c++17 -Wno-psabi -g -c -pthread -I$(SYSTEM_INCLUDE) -I$(MAVLINK_DIR) -I$(LOCAL_INCLUDE) $(INC_DIR) $(SRC_DIR)/camerastream.cpp

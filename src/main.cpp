@@ -11,7 +11,7 @@ using namespace boost::asio;
 #include "constants.h"
 #include "microservice.h"
 #include "power.h"
-#include "camera.h"
+#include "cameramicroservice.h"
 #include "gpio.h"
 #include "status.h"
 #include "sensor.h"
@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
 
         if (vm.count("camera")) {
             std::cout << "Camera microservice enabled ";
-            service = new CameraMicroservice(io_service);
+            service = new CameraMicroservice(io_service, platform_type);
         } else if (vm.count("power")) {
             std::cout << "Power sensor microservice enabled ";
             service = new PowerMicroservice(io_service, platform_type);
