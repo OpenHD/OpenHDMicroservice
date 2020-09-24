@@ -1,9 +1,9 @@
-#include <iostream>
 
 #include <iostream>
 #include <iterator>
 #include <boost/program_options.hpp>
 #include <exception>
+#include <fstream>
 
 #include "boost/asio.hpp"
 using namespace boost::asio;
@@ -15,6 +15,25 @@ using namespace boost::asio;
 #include "gpio.h"
 #include "status.h"
 #include "sensor.h"
+
+#include "json.hpp"
+
+
+// todo: move this and similar code in openhd-system to a central library pulled in with a git submodule.
+PlatformType platform_type_from_string(std::string str) {
+    if (str == "raspberrypi") {
+        return PlatformTypeRaspberryPi;
+    } else if (str == "jetson") {
+        return PlatformTypeJetson;
+    } else if (str == "nanopi") {
+        return PlatformTypeNanoPi;
+    } else if (str == "pc") {
+        return PlatformTypePC;
+    }
+
+    return PlatformTypeUnknown;
+}
+
 
 
 int main(int argc, char *argv[]) {
@@ -44,21 +63,34 @@ int main(int argc, char *argv[]) {
             exit(0);
         }
 
+        PlatformType platform_type = PlatformTypeUnknown;
+
+        try {
+            std::ifstream f("/tmp/platform_manifest");
+            nlohmann::json j;
+            f >> j;
+
+            platform_type = platform_type_from_string(j["platform"]);
+        } catch (std::exception &ex) {
+            // don't do anything, but send an error message to the user through the status service
+            std::cerr << "platform error: " << ex.what() << std::endl;
+        }
+
         if (vm.count("camera")) {
             std::cout << "Camera microservice enabled ";
             service = new CameraMicroservice(io_service);
         } else if (vm.count("power")) {
             std::cout << "Power sensor microservice enabled ";
-            service = new PowerMicroservice(io_service);
+            service = new PowerMicroservice(io_service, platform_type);
         } else if (vm.count("gpio")) {
             std::cout << "GPIO control microservice enabled ";
-            service = new GPIOMicroservice(io_service);
+            service = new GPIOMicroservice(io_service, platform_type);
         } else if (vm.count("status")) {
             std::cout << "Status microservice enabled ";
-            service = new StatusMicroservice(io_service);
+            service = new StatusMicroservice(io_service, platform_type);
         } else if (vm.count("sensor")) {
             std::cout << "Sensor sensor microservice enabled ";
-            service = new SensorMicroservice(io_service);
+            service = new SensorMicroservice(io_service, platform_type);
         } else {
             std::cout << "No service enabled" << std::endl;
             exit(1);

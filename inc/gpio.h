@@ -12,7 +12,7 @@
 
 class GPIOMicroservice: public Microservice {
 public:
-    GPIOMicroservice(boost::asio::io_service &io_service);
+    GPIOMicroservice(boost::asio::io_service &io_service, PlatformType platform);
 
     void setup();
 

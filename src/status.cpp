@@ -36,7 +36,7 @@ std::string get_openhd_version() {
 }
 
 
-StatusMicroservice::StatusMicroservice(boost::asio::io_service &io_service): Microservice(io_service), m_udp_socket(io_service) {
+StatusMicroservice::StatusMicroservice(boost::asio::io_service &io_service, PlatformType platform): Microservice(io_service, platform), m_udp_socket(io_service) {
     set_compid(SERVICE_COMPID);
 
     m_udp_socket.open(boost::asio::ip::udp::v4());

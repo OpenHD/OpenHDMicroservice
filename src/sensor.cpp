@@ -28,8 +28,8 @@ constexpr uint8_t SERVICE_COMPID = MAV_COMP_ID_USER4;
 
 
 
-SensorMicroservice::SensorMicroservice(boost::asio::io_service &io_service): 
-    Microservice(io_service),
+SensorMicroservice::SensorMicroservice(boost::asio::io_service &io_service, PlatformType platform): 
+    Microservice(io_service, platform),
     m_temperature_interval(10000), 
     m_temperature_timer(io_service, m_temperature_interval) {
     set_compid(SERVICE_COMPID);

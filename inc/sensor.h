@@ -22,7 +22,7 @@ typedef enum TemperatureSensor {
 
 class SensorMicroservice: public Microservice {
 public:
-    SensorMicroservice(boost::asio::io_service &io_service);
+    SensorMicroservice(boost::asio::io_service &io_service, PlatformType platform);
 
     void setup();
 

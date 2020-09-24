@@ -18,7 +18,7 @@ typedef enum PowerSensor {
 
 class PowerMicroservice: public Microservice {
 public:
-    PowerMicroservice(boost::asio::io_service &io_service);
+    PowerMicroservice(boost::asio::io_service &io_service, PlatformType platform);
 
     void setup();
 

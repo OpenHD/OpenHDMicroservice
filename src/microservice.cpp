@@ -19,15 +19,16 @@ using namespace boost::asio;
 
 
 
-Microservice::Microservice(boost::asio::io_service &io_service): m_io_service(io_service),
-                                                                 m_socket(new boost::asio::ip::tcp::socket(io_service)), 
-                                                                 m_boot_time(std::chrono::steady_clock::now()),
-                                                                 m_heartbeat_interval(5), 
-                                                                 m_heartbeat_timer(io_service, m_heartbeat_interval), 
-                                                                 m_sys_time_interval(5), 
-                                                                 m_sys_time_timer(io_service, m_sys_time_interval),
-                                                                 m_reconnect_interval(1), 
-                                                                 m_reconnect_timer(io_service, m_reconnect_interval) {}
+Microservice::Microservice(boost::asio::io_service &io_service, PlatformType platform): m_platform_type(platform),
+                                                                                        m_io_service(io_service),
+                                                                                        m_socket(new boost::asio::ip::tcp::socket(io_service)), 
+                                                                                        m_boot_time(std::chrono::steady_clock::now()),
+                                                                                        m_heartbeat_interval(5), 
+                                                                                        m_heartbeat_timer(io_service, m_heartbeat_interval), 
+                                                                                        m_sys_time_interval(5), 
+                                                                                        m_sys_time_timer(io_service, m_sys_time_interval),
+                                                                                        m_reconnect_interval(1), 
+                                                                                        m_reconnect_timer(io_service, m_reconnect_interval) {}
 
 void Microservice::set_sysid(uint8_t sysid) {
     this->m_sysid = sysid;

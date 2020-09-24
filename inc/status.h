@@ -22,7 +22,7 @@ struct StatusMessage {
 
 class StatusMicroservice: public Microservice {
 public:
-    StatusMicroservice(boost::asio::io_service &io_service);
+    StatusMicroservice(boost::asio::io_service &io_service, PlatformType platform);
 
     void setup();
 

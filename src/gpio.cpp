@@ -31,7 +31,7 @@ constexpr uint8_t SERVICE_COMPID = MAV_COMP_ID_USER2;
 #define GPIO32 32
 
 
-GPIOMicroservice::GPIOMicroservice(boost::asio::io_service &io_service): Microservice(io_service) {
+GPIOMicroservice::GPIOMicroservice(boost::asio::io_service &io_service, PlatformType platform): Microservice(io_service, platform) {
     set_compid(SERVICE_COMPID);
 }
 

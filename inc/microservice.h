@@ -12,7 +12,7 @@
 
 class Microservice {
 public:
-    Microservice(boost::asio::io_service &io_service);
+    Microservice(boost::asio::io_service &io_service, PlatformType platform);
     
     virtual ~Microservice() {}
 
@@ -30,6 +30,8 @@ public:
     virtual void process_mavlink_message(mavlink_message_t msg) = 0;
 
 protected:
+    PlatformType m_platform_type;
+    
     uint8_t m_sysid;
     uint8_t m_compid;
     char m_recv_buf[1024];
