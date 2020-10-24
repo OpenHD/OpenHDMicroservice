@@ -179,6 +179,33 @@ bool GStreamerStream::supports_cbr() {
 void GStreamerStream::set_cbr(bool enable) {
     std::cerr << "GStreamerStream::set_cbr(" << enable << ")" << std::endl;
 
+    if (!m_pipeline) {
+        std::cerr << "No pipeline, ignoring bitrate command" << std::endl;
+        return;
+    }
+
+    // this depends on setting a particular pipeline element with name=bitratectrl, sometimes that will
+    // be the source at the start of the pipeline, sometimes it will be an encoder element. Luckly all of them
+    // use the same property name, "bitrate".
+    GstElement *bitratectrl = gst_bin_get_by_name(GST_BIN(m_pipeline), "bitratectrl");
+
+    if (!bitratectrl) {
+        std::cerr << "No bitrate control element, ignoring CBR/VBR command" << std::endl;
+        return;
+    }
+
+    switch (m_camera.type) {
+        case CameraTypeRaspberryPiCSI: {
+            break;
+        }
+        case CameraTypeJetsonCSI: {
+            g_object_set(bitratectrl, "control-rate", enable ? 1 : 0, NULL);
+            break;
+        }
+        default: {
+            break;
+        }
+    }
 }
 
 
