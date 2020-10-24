@@ -15,8 +15,6 @@
 
 #include "status.h"
 
-#include "constants.h"
-
 #include "localmessage_t.h"
 
 

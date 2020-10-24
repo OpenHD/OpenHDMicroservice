@@ -12,7 +12,6 @@
 
 #include "gpio.h"
 
-#include "constants.h"
 
 extern "C" {
     #include <bcm2835.h>

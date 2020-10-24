@@ -21,8 +21,6 @@
 
 #include "sensor.h"
 
-#include "constants.h"
-
 
 constexpr uint8_t SERVICE_COMPID = MAV_COMP_ID_USER4;
 

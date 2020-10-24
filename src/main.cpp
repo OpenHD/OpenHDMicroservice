@@ -8,8 +8,9 @@
 #include "boost/asio.hpp"
 using namespace boost::asio;
 
-#include "constants.h"
-#include "microservice.h"
+#include "openhd-microservice.hpp"
+#include "openhd-platform.hpp"
+
 #include "power.h"
 #include "cameramicroservice.h"
 #include "gpio.h"
@@ -17,22 +18,6 @@ using namespace boost::asio;
 #include "sensor.h"
 
 #include "json.hpp"
-
-
-// todo: move this and similar code in openhd-system to a central library pulled in with a git submodule.
-PlatformType platform_type_from_string(std::string str) {
-    if (str == "raspberrypi") {
-        return PlatformTypeRaspberryPi;
-    } else if (str == "jetson") {
-        return PlatformTypeJetson;
-    } else if (str == "nanopi") {
-        return PlatformTypeNanoPi;
-    } else if (str == "pc") {
-        return PlatformTypePC;
-    }
-
-    return PlatformTypeUnknown;
-}
 
 
 

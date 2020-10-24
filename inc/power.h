@@ -2,13 +2,12 @@
 #define POWER_H
 
 #include <openhd/mavlink.h>
-#include "constants.h"
 
 #include <array>
 
 #include <boost/asio.hpp>
 
-#include "microservice.h"
+#include "openhd-microservice.hpp"
 
 typedef enum PowerSensor {
     PowerSensorNone,

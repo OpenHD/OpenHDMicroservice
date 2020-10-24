@@ -1,13 +1,12 @@
 #ifndef CAMERASTREAM_H
 #define CAMERASTREAM_H
 
-#include "constants.h"
-
 #include <stdexcept>
 #include <vector>
 
 #include <boost/asio.hpp>
 
+#include "openhd-camera.hpp"
 
 class CameraStream {
 public:

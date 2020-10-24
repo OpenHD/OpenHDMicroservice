@@ -1,13 +1,13 @@
 #ifndef GSTREAMERSTREAM_H
 #define GSTREAMERSTREAM_H
 
-#include "constants.h"
-
 #include <array>
 #include <stdexcept>
 #include <vector>
 
 #include <boost/asio.hpp>
+
+#include "openhd-camera.hpp"
 
 #include "camerastream.h"
 

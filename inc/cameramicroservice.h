@@ -2,7 +2,6 @@
 #define CAMERAMICROSERVICE_H
 
 #include <openhd/mavlink.h>
-#include "constants.h"
 
 #include <array>
 #include <stdexcept>
@@ -10,8 +9,12 @@
 
 #include <boost/asio.hpp>
 
+#include "openhd-camera.hpp"
+#include "openhd-microservice.hpp"
+
+
 #include "camerastream.h"
-#include "microservice.h"
+
 
 class CameraMicroservice: public Microservice {
 public:
@@ -24,8 +27,6 @@ public:
 
 private:
     PlatformType m_platform_type;
-
-    CameraType camera_type_from_string(std::string str);
 
     std::vector<CameraStream> m_camera_streams;
 };

@@ -17,11 +17,11 @@
 
 #include <openhd/mavlink.h>
 
+#include "openhd-camera.hpp"
+
 #include "cameramicroservice.h"
 #include "camerastream.h"
 #include "gstreamerstream.h"
-
-#include "constants.h"
 
 
 constexpr uint8_t SERVICE_COMPID = MAV_COMP_ID_CAMERA;
@@ -213,22 +213,3 @@ void CameraMicroservice::process_mavlink_message(mavlink_message_t msg) {
         }
     }
 }
-
-
-CameraType CameraMicroservice::camera_type_from_string(std::string str) {
-    if (str == "pi-csi") {
-        return CameraTypeRaspberryPiCSI;
-    } else if (str == "jetson-csi") {
-        return CameraTypeJetsonCSI;
-    } else if (str == "rockchip-csi") {
-        return CameraTypeRockchipCSI;
-    } else if (str == "uvc") {
-        return CameraTypeUVC;
-    } else if (str == "ip") {
-        return CameraTypeIP;
-    }
-
-    return CameraTypeUnknown;
-}
-
-

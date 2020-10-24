@@ -2,14 +2,13 @@
 #define STATUS_H
 
 #include <openhd/mavlink.h>
-#include "constants.h"
 
 #include <array>
 #include <vector>
 
 #include <boost/asio.hpp>
 
-#include "microservice.h"
+#include "openhd-microservice.hpp"
 
 struct StatusMessage {
     std::string message;

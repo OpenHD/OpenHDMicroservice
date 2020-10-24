@@ -13,8 +13,6 @@
 
 #include "power.h"
 
-#include "constants.h"
-
 
 extern "C" {
     #include <lifepo4wered-data.h>
