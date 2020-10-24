@@ -159,6 +159,11 @@ void GStreamerStream::set_bitrate(int bitrate) {
     // use the same property name, "bitrate".
     GstElement *bitratectrl = gst_bin_get_by_name(GST_BIN(m_pipeline), "bitratectrl");
 
+    if (!bitratectrl) {
+        std::cerr << "No bitrate control element, ignoring bitrate command" << std::endl;
+        return;
+    }
+
     // this can fail, but it shouldn't affect anything if it does
     g_object_set(bitratectrl, "bitrate", bitrate, NULL);
 }
