@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
             nlohmann::json j;
             f >> j;
 
-            platform_type = platform_type_from_string(j["platform"]);
+            platform_type = string_to_platform_type(j["platform"]);
         } catch (std::exception &ex) {
             // don't do anything, but send an error message to the user through the status service
             std::cerr << "platform error: " << ex.what() << std::endl;
