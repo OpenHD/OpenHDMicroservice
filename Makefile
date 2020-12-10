@@ -1,7 +1,7 @@
 
 MAVLINK_DIR = $(PWD)/lib/mavlink_generated/include/mavlink/v2.0 
 SRC_DIR = $(PWD)/src
-INC_DIR = `pkg-config --cflags gstreamer-base-1.0` -I$(PWD)/inc -I$(PWD)/lib/RTIMULib2/RTIMULib -I$(PWD)/lib/RTIMULib2/RTIMULib/IMUDrivers
+INC_DIR = -I$(PWD)/inc -I$(PWD)/lib/RTIMULib2/RTIMULib -I$(PWD)/lib/RTIMULib2/RTIMULib/IMUDrivers
 
 ifeq ($(PREFIX),)
 	PREFIX := /usr/local
