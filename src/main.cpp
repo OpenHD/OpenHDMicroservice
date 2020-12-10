@@ -12,7 +12,6 @@ using namespace boost::asio;
 #include "openhd-platform.hpp"
 
 #include "power.h"
-#include "cameramicroservice.h"
 #include "gpio.h"
 #include "status.h"
 #include "sensor.h"
@@ -32,7 +31,6 @@ int main(int argc, char *argv[]) {
         boost::program_options::options_description desc("Options");
 
         desc.add_options()("help", "produce help message")
-                          ("camera", "enable camera microservice")
                           ("power", "enable power sensor microservice")
                           ("gpio", "enable gpio control microservice")
                           ("status", "enable status microservice")
@@ -61,10 +59,7 @@ int main(int argc, char *argv[]) {
             std::cerr << "platform error: " << ex.what() << std::endl;
         }
 
-        if (vm.count("camera")) {
-            std::cout << "Camera microservice enabled ";
-            service = new CameraMicroservice(io_service, platform_type);
-        } else if (vm.count("power")) {
+        if (vm.count("power")) {
             std::cout << "Power sensor microservice enabled ";
             service = new PowerMicroservice(io_service, platform_type);
         } else if (vm.count("gpio")) {

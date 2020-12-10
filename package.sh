@@ -28,7 +28,7 @@ echo "deb https://dl.cloudsmith.io/public/openhd/openhd-2-1-testing/deb/${OS} ${
 
 apt -y update || exit 1
 
-apt -y install libboost-regex-dev libasio-dev libboost-filesystem-dev libboost-system-dev libboost-program-options-dev lifepoweredpi gstreamer1.0-plugins-base openhd || exit 1
+apt -y install libboost-regex-dev libasio-dev libboost-filesystem-dev libboost-system-dev libboost-program-options-dev lifepoweredpi openhd || exit 1
 
 PACKAGE_NAME=openhd-microservice
 
@@ -53,7 +53,6 @@ fpm -a ${PACKAGE_ARCH} -s dir -t deb -n ${PACKAGE_NAME} -v ${VERSION//v} -C ${TM
   -d "libboost-system-dev >= 1.62.0" \
   -d "libboost-regex-dev >= 1.62.0" \
   -d "libboost-program-options-dev >= 1.62.0" \
-  -d "gstreamer1.0-plugins-base" \
   -d "openhd" \
   -d "openhd-router >= 0.1.8" || exit 1
 
