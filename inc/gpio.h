@@ -8,7 +8,7 @@
 #include <boost/asio.hpp>
 
 #include "openhd-microservice.hpp"
-
+#include "openhd-platform.hpp"
 
 class GPIOMicroservice: public Microservice {
 public:

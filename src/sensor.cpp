@@ -19,6 +19,8 @@
 
 #include <openhd/mavlink.h>
 
+#include "openhd-platform.hpp"
+
 #include "sensor.h"
 
 

@@ -13,6 +13,8 @@
 
 #include <openhd/mavlink.h>
 
+#include "openhd-platform.hpp"
+
 #include "status.h"
 
 #include "localmessage_t.h"

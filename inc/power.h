@@ -8,6 +8,7 @@
 #include <boost/asio.hpp>
 
 #include "openhd-microservice.hpp"
+#include "openhd-platform.hpp"
 
 typedef enum PowerSensor {
     PowerSensorNone,

@@ -9,6 +9,7 @@
 #include <boost/asio.hpp>
 
 #include "openhd-microservice.hpp"
+#include "openhd-platform.hpp"
 
 struct StatusMessage {
     std::string message;

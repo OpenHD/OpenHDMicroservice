@@ -10,6 +10,8 @@
 
 #include <openhd/mavlink.h>
 
+#include "openhd-platform.hpp"
+
 #include "gpio.h"
 
 
