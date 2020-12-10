@@ -2,3 +2,6 @@
 	path = lib/RTIMULib2
 	url = https://github.com/OpenHD/RTIMULib2.git
         branch = openhd
+[submodule "lib/Mavlink/mavlink"]
+	path = lib/Mavlink/mavlink
+	url = https://github.com/mavlink/mavlink.git
