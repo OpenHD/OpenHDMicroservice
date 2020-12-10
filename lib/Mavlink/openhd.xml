@@ -1,0 +1,146 @@
+<?xml version='1.0'?>
+<mavlink>
+    <include>mavlink/message_definitions/v1.0/common.xml</include>
+	<include>mavlink/message_definitions/v1.0/ardupilotmega.xml</include>
+	<enums>
+		<enum name="OPENHD_CMD">
+			<description>Commands for OpenHD</description>
+			<entry value="11200" name="OPENHD_CMD_GET_CAMERA_SETTINGS" hasLocation="false" isDestination="false">
+				<description>Get Open.HD camera settings</description>
+				<param index="1">Reserved (all remaining params)</param>
+			</entry>
+			<entry value="11201" name="OPENHD_CMD_SET_CAMERA_SETTINGS" hasLocation="false" isDestination="false">
+				<description>Set Open.HD camera settings</description>
+				<param index="1" label="brightness" minValue="0" maxValue="255" increment="1">Brightness level</param>
+				<param index="2" label="contrast" minValue="0" maxValue="255" increment="1">Contrast level</param>
+				<param index="3" label="saturation" minValue="0" maxValue="255" increment="1">Saturation level</param>
+			</entry>
+			<entry value="11300" name="OPENHD_CMD_SET_GPIOS" hasLocation="false" isDestination="false">
+				<description>Set Open.HD GPIO state</description>
+				<param index="1" label="pins" minValue="0" maxValue="255" increment="1">Pin bitpattern to set</param>
+			</entry>
+			<entry value="11301" name="OPENHD_CMD_GET_GPIOS" hasLocation="false" isDestination="false">
+				<description>Get Open.HD GPIO state</description>
+			</entry>
+			<entry value="11400" name="OPENHD_CMD_POWER_SHUTDOWN" hasLocation="false" isDestination="false">
+				<description>Safe shutdown target system</description>
+			</entry>
+			<entry value="11401" name="OPENHD_CMD_POWER_REBOOT" hasLocation="false" isDestination="false">
+				<description>Reboot target system</description>
+			</entry>
+			<entry value="11500" name="OPENHD_CMD_GET_STATUS_MESSAGES" hasLocation="false" isDestination="false">
+				<description>Get all status messages that have been stored by the target component</description>
+			</entry>
+			<entry value="11501" name="OPENHD_CMD_GET_VERSION" hasLocation="false" isDestination="false">
+				<description>Get the Open.HD version of the target system</description>
+			</entry>
+		</enum>
+	</enums>	
+	<messages>
+		<message id="1200" name="OPENHD_CAMERA_SETTINGS">
+			<description>OPENHD_CAMERA_SETTINGS</description>
+			<field type="uint8_t" name="target_system">system id of the requesting system</field>
+			<field type="uint8_t" name="target_component">component id of the requesting component</field>
+			<field type="uint8_t" name="brightness">brightness</field>
+			<field type="uint8_t" name="contrast">contrast</field>
+			<field type="uint8_t" name="saturation">saturation</field>
+		</message>
+		<message id="1210" name="OPENHD_GROUND_TELEMETRY">
+		    <wip />
+			<description>OPENHD_GROUND_TELEMETRY</description>
+			<field type="uint8_t" name="target_system">system id of the requesting system</field>
+			<field type="uint8_t" name="target_component">component id of the requesting component</field>
+			<field type="uint32_t" name="damaged_block_cnt">damaged_block_cnt</field>
+			<field type="uint32_t" name="lost_packet_cnt">lost_packet_cnt</field>
+			<field type="uint32_t" name="received_packet_cnt">received_packet_cnt</field>
+			<field type="uint32_t" name="kbitrate">kbitrate</field>
+			<field type="uint32_t" name="kbitrate_measured">kbitrate_measured</field>
+			<field type="uint32_t" name="kbitrate_set">kbitrate_set</field>
+		</message>
+		<message id="1211" name="OPENHD_AIR_TELEMETRY">
+		    <wip />
+			<description>OPENHD_AIR_TELEMETRY</description>
+			<field type="uint8_t" name="target_system">system id of the requesting system</field>
+			<field type="uint8_t" name="target_component">component id of the requesting component</field>
+			<field type="uint32_t" name="damaged_block_cnt">damaged_block_cnt</field>
+			<field type="uint32_t" name="lost_packet_cnt">lost_packet_cnt</field>
+			<field type="uint32_t" name="skipped_packet_cnt">skipped_packet_cnt</field>
+			<field type="uint32_t" name="injection_fail_cnt">injection_fail_cnt</field>			
+			<field type="uint8_t" name="current_signal_dbm">current_signal_dbm</field>
+		</message>
+		<message id="1212" name="OPENHD_WIFI_STATUS">
+		    <wip />
+			<description>OPENHD_WIFI_STATUS</description>
+			<field type="uint8_t" name="target_system">system id of the requesting system</field>
+			<field type="uint8_t" name="target_component">component id of the requesting component</field>
+			<field type="uint8_t" name="wifi_adapter_cnt">wifi_adapter_cnt</field>
+			<field type="int8_t[4]" name="current_signal_dbm">current_signal_dbm</field>
+			<field type="uint8_t[4]" name="wifi_card_type">wifi_card_type</field>
+			<field type="uint32_t[4]" name="received_packet_cnt">received_packet_cnt</field>
+		</message>
+		<message id="1230" name="OPENHD_SYS_LOAD">
+		    <wip />
+			<description>Used for ground/air system load</description>
+			<field type="uint8_t" name="target_system">system id of the requesting system</field>
+			<field type="uint8_t" name="target_component">component id of the requesting component</field>
+			<field type="uint8_t" name="cpuload">cpuload</field>
+			<field type="uint8_t" name="temp">temp</field>
+		</message>
+		<message id="1240" name="OPENHD_POWER">
+		    <wip />
+			<description>OPENHD_POWER</description>
+			<field type="uint8_t" name="target_system">system id of the requesting system</field>
+			<field type="uint8_t" name="target_component">component id of the requesting component</field>
+			<field type="float" name="vin">vin</field>
+			<field type="float" name="vout">vout</field>
+			<field type="float" name="vbat">vbat</field>
+			<field type="float" name="iout">iout</field>
+			<field type="uint8_t" name="type" enum="MAV_BATTERY_TYPE">Type (chemistry) of the battery</field>
+		</message>
+		<message id="1241" name="OPENHD_TEMPERATURE_SENSOR">
+		    <wip />
+			<description>Sent by air/ground, not intended to replace standard messages from the flight controller. Supports multiple sensors, but users will have to label them in QOpenHD to tell them apart</description>
+			<field type="uint8_t" name="target_system">system id of the requesting system</field>
+			<field type="uint8_t" name="target_component">component id of the requesting component</field>
+			<field type="int8_t[8]" name="temperature" units="degC">temperature</field>
+		</message>
+		<message id="1250" name="OPENHD_GPIO_STATE">
+		    <wip />
+			<description>OPENHD_GPIO_STATE</description>
+			<field type="uint8_t" name="target_system">system id of the requesting system</field>
+			<field type="uint8_t" name="target_component">component id of the requesting component</field>
+			<field type="uint8_t" name="pins">pins</field>
+		</message>
+		<message id="1251" name="OPENHD_ORIENTATION">
+		    <wip />
+			<description>Sent by the air/ground station to itself, for antenna tracking, video stabilization, etc</description>
+			<field type="uint8_t" name="target_system">system id of the requesting system</field>
+			<field type="uint8_t" name="target_component">component id of the requesting component</field>
+			<field type="int16_t" name="heading">heading</field>
+			<field type="int16_t" name="elevation">elevation</field>
+		</message>
+		<message id="1252" name="OPENHD_HEAD_ORIENTATION">
+		    <wip />
+			<description>Sent by QOpenHD when running on a phone in a VR headset or a VR system where QOpenHD can run directly</description>
+			<field type="uint8_t" name="target_system">system id of the requesting system</field>
+			<field type="uint8_t" name="target_component">component id of the requesting component</field>
+			<field type="int16_t" name="pitch">pitch</field>
+			<field type="int16_t" name="roll">roll</field>
+			<field type="int16_t" name="yaw">yaw</field>
+		</message>
+		<message id="1260" name="OPENHD_STATUS_MESSAGE">
+			<description>Status message for internal Open.HD components</description>
+			<field type="uint8_t" name="target_system">system id of the requesting system</field>
+			<field type="uint8_t" name="target_component">component id of the requesting component</field>
+			<field type="uint8_t" name="severity" enum="MAV_SEVERITY">severity level, relies on the definitions within RFC-5424.</field>
+			<field type="char[50]" name="text">status message, 49 character max length since it *must* be null-terminated</field>
+			<field type="uint64_t" name="timestamp">timestamp when message was originally generated</field>
+		</message>
+		<message id="1261" name="OPENHD_VERSION_MESSAGE">
+			<description>The current Open.HD version running on the system sending the message</description>
+			<field type="uint8_t" name="target_system">system id of the requesting system</field>
+			<field type="uint8_t" name="target_component">component id of the requesting component</field>
+			<field type="char[30]" name="version">version string, 29 character max length since it *must* be null-terminated</field>
+		</message>
+	</messages>
+</mavlink>
