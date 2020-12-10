@@ -1,7 +1,3 @@
-[submodule "lib/mavlink"]
-	path = lib/mavlink
-	url = https://github.com/infincia/mavlink.git
-        branch = openhd
 [submodule "lib/RTIMULib2"]
 	path = lib/RTIMULib2
 	url = https://github.com/OpenHD/RTIMULib2.git
