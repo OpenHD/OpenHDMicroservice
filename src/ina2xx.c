@@ -179,8 +179,6 @@ int get_ina2xx_data(ina2xx_data *sensor_data) {
     int current;
     int voltage;
 
-    sensor_data->vbat = 0;
-
     if (!read_ina2xx_register(BUS_REG, 2, (uint8_t*)&data)) {
         fprintf( stderr, "Error getting INA2XX voltage: %s\n", strerror(errno));
         return -1;
@@ -200,6 +198,8 @@ int get_ina2xx_data(ina2xx_data *sensor_data) {
     sensor_data->iout = current;
 
     sensor_data->vout = voltage;
+
+    sensor_data->vbat = voltage;
 
     fprintf(stderr, "voltage: %d\n", voltage);
     fprintf(stderr, "current: %d\n", current);

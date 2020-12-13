@@ -89,6 +89,7 @@ void PowerMicroservice::send_openhd_power(const boost::system::error_code& error
                 vin = data.vin;
                 vout = data.vout;
                 iout = data.iout;
+                vbat = data.vbat;
             }
             bat_type = MAV_BATTERY_TYPE_UNKNOWN;
             break;
