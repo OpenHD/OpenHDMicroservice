@@ -36,6 +36,8 @@ python2 get-pip.py
 
 pip install future
 
+lib/Mavlink/mavgenerate_dialect.py
+
 PACKAGE_NAME=openhd-microservice
 
 TMPDIR=/tmp/${PACKAGE_NAME}-installdir
