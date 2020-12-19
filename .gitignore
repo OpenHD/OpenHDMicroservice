@@ -12,3 +12,4 @@ debug
 obj
 
 openhd_microservice
+lib/Mavlink/out

@@ -28,7 +28,18 @@ echo "deb https://dl.cloudsmith.io/public/openhd/openhd-2-1-testing/deb/${OS} ${
 
 apt -y update || exit 1
 
-apt -y install libboost-regex-dev libasio-dev libboost-filesystem-dev libboost-system-dev libboost-program-options-dev lifepoweredpi openhd || exit 1
+apt -y install libboost-regex-dev libasio-dev libboost-filesystem-dev libboost-system-dev libboost-program-options-dev lifepoweredpi openhd python2 python-lxml || exit 1
+
+curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
+
+python2 get-pip.py
+
+pip install future
+
+# Create the Open.HD MAVLink dialect
+pushd lib/Mavlink
+./mavgenerate_dialect.py
+popd
 
 PACKAGE_NAME=openhd-microservice
 
