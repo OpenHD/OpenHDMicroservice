@@ -36,7 +36,10 @@ python2 get-pip.py
 
 pip install future
 
-lib/Mavlink/mavgenerate_dialect.py
+# Create the Open.HD MAVLink dialect
+pushd lib/Mavlink
+./mavgenerate_dialect.py
+popd
 
 PACKAGE_NAME=openhd-microservice
 
