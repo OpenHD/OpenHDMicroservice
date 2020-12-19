@@ -11,9 +11,9 @@
 
 #include <openhd/mavlink.h>
 
-#include "power.h"
+#include "openhd-platform.hpp"
 
-#include "constants.h"
+#include "power.h"
 
 
 extern "C" {

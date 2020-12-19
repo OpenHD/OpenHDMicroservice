@@ -8,31 +8,15 @@
 #include "boost/asio.hpp"
 using namespace boost::asio;
 
-#include "constants.h"
-#include "microservice.h"
+#include "openhd-microservice.hpp"
+#include "openhd-platform.hpp"
+
 #include "power.h"
-#include "cameramicroservice.h"
 #include "gpio.h"
 #include "status.h"
 #include "sensor.h"
 
 #include "json.hpp"
-
-
-// todo: move this and similar code in openhd-system to a central library pulled in with a git submodule.
-PlatformType platform_type_from_string(std::string str) {
-    if (str == "raspberrypi") {
-        return PlatformTypeRaspberryPi;
-    } else if (str == "jetson") {
-        return PlatformTypeJetson;
-    } else if (str == "nanopi") {
-        return PlatformTypeNanoPi;
-    } else if (str == "pc") {
-        return PlatformTypePC;
-    }
-
-    return PlatformTypeUnknown;
-}
 
 
 
@@ -47,7 +31,6 @@ int main(int argc, char *argv[]) {
         boost::program_options::options_description desc("Options");
 
         desc.add_options()("help", "produce help message")
-                          ("camera", "enable camera microservice")
                           ("power", "enable power sensor microservice")
                           ("gpio", "enable gpio control microservice")
                           ("status", "enable status microservice")
@@ -70,16 +53,13 @@ int main(int argc, char *argv[]) {
             nlohmann::json j;
             f >> j;
 
-            platform_type = platform_type_from_string(j["platform"]);
+            platform_type = string_to_platform_type(j["platform"]);
         } catch (std::exception &ex) {
             // don't do anything, but send an error message to the user through the status service
             std::cerr << "platform error: " << ex.what() << std::endl;
         }
 
-        if (vm.count("camera")) {
-            std::cout << "Camera microservice enabled ";
-            service = new CameraMicroservice(io_service, platform_type);
-        } else if (vm.count("power")) {
+        if (vm.count("power")) {
             std::cout << "Power sensor microservice enabled ";
             service = new PowerMicroservice(io_service, platform_type);
         } else if (vm.count("gpio")) {

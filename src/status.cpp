@@ -13,9 +13,9 @@
 
 #include <openhd/mavlink.h>
 
-#include "status.h"
+#include "openhd-platform.hpp"
 
-#include "constants.h"
+#include "status.h"
 
 #include "localmessage_t.h"
 

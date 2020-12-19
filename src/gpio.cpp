@@ -10,9 +10,10 @@
 
 #include <openhd/mavlink.h>
 
+#include "openhd-platform.hpp"
+
 #include "gpio.h"
 
-#include "constants.h"
 
 extern "C" {
     #include <bcm2835.h>

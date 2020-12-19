@@ -19,9 +19,9 @@
 
 #include <openhd/mavlink.h>
 
-#include "sensor.h"
+#include "openhd-platform.hpp"
 
-#include "constants.h"
+#include "sensor.h"
 
 
 constexpr uint8_t SERVICE_COMPID = MAV_COMP_ID_USER4;

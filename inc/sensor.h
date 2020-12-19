@@ -2,13 +2,13 @@
 #define SENSOR_MICROSERVICE_H
 
 #include <openhd/mavlink.h>
-#include "constants.h"
 
 #include <array>
 
 #include <boost/asio.hpp>
 
-#include "microservice.h"
+#include "openhd-microservice.hpp"
+#include "openhd-platform.hpp"
 
 #include "RTIMULib.h"
 #include "RTIMUMagCal.h"
