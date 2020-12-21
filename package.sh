@@ -27,7 +27,7 @@ echo "deb https://dl.cloudsmith.io/public/openhd/openhd-2-0/deb/${OS} ${DISTRO} 
 
 apt -y update
 
-apt -y install libasio-dev libboost-filesystem-dev libboost-system-dev libboost-program-options-dev lifepoweredpi python2 python-lxml
+apt -y install libasio-dev libboost-filesystem-dev libboost-system-dev libboost-program-options-dev lifepoweredpi python python-lxml
 
 curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
 
