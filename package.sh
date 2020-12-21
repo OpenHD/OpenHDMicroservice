@@ -64,8 +64,7 @@ fpm -a ${PACKAGE_ARCH} -s dir -t deb -n ${PACKAGE_NAME} -v ${VERSION//v} -C ${TM
   -d "libboost-system-dev >= 1.62.0" \
   -d "libboost-regex-dev >= 1.62.0" \
   -d "libboost-program-options-dev >= 1.62.0" \
-  -d "openhd" \
-  -d "openhd-router >= 0.1.8" || exit 1
+  -d "openhd" || exit 1
 
 #
 # Only push to cloudsmith for tags. If you don't want something to be pushed to the repo, 
